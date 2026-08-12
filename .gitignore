@@ -115,3 +115,7 @@ target/
 !config_examples/config_freqai.example.json
 
 docker-compose-*.yml
+
+# LoopX goal state
+.loopx/
+.codex/
