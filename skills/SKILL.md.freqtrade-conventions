@@ -1,0 +1,51 @@
+# SKILL.md — freqtrade-conventions
+
+## Triggers
+- "任何策略修改前必须通过此规范检查"
+
+## Rules
+
+### 文件命名
+- 路径: `user_data/strategies/{ClassName}.py`
+- 类名 **必须**与文件名完全匹配 (e.g. `class MyStrategy:` in `MyStrategy.py`)
+
+### 必须属性
+```python
+INTERFACE_VERSION = 3
+timeframe = "4h"
+minimal_roi = {...}
+stoploss = -0.10
+startup_candle_count = 30
+```
+
+### 必须方法
+```python
+def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame
+def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame
+def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame
+```
+
+### 信号列名
+- ✅ `enter_long`, `exit_long`
+- ❌ `enter_signal`, `exit_signal` — **禁止使用**
+
+### 禁止行为
+- 硬编码交易对 (如 `if pair == "ETH/USDT"`)
+- 修改 `config.json`
+- 修改 `.venv/` 目录
+- 在策略代码中直接写入 `dry_run` 配置
+
+### 测试前必须
+```bash
+/root/code/freqtrade/.venv/bin/python -m freqtrade backtesting --strategy <Name> --config /root/code/freqtrade/user_data/config.json
+```
+必须返回 **成功** (exit code 0)，否则禁止提交。
+
+### 实盘前必须
+- `win_rate >= 0.45` **AND**
+- `max_drawdown <= 0.15`
+
+### 🐛 BUG FIX FOUND
+在 `_find_xabcd` 中，`empty extremes` 会导致 `IndexError`。
+
+**修复方向**: 在访问 `extremes` 数组前检查 `len(extremes) >= 2`，或在 `extremes` 为空时提前 return。

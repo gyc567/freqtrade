@@ -1,0 +1,57 @@
+# SKILL.md — freqtrade-triage
+
+## Triggers
+- "每天 08:00 UTC"
+- "手动触发 /loop triage"
+
+## Actions
+
+### 1. List strategies with mtime
+```bash
+ls -la /root/code/freqtrade/user_data/strategies/
+```
+
+### 2. Find recent backtests (last 7 days)
+```bash
+find /root/code/freqtrade/user_data/backtest_results/ -name '*.json' -mtime -7
+```
+
+### 3. Recent log errors
+```bash
+tail -50 /root/code/freqtrade/user_data/logs/freqtrade.log
+```
+
+### 4. Recent commits
+```bash
+git -C /root/code/freqtrade log --oneline -10
+```
+
+### 5. Check for API errors (451 / GEO / blocked)
+```bash
+grep -i "error\|451\|blocked\|GEO" /root/code/freqtrade/user_data/logs/freqtrade.log
+```
+
+## Rules
+
+| Condition | Flag |
+|-----------|------|
+| 策略文件 > 7天未回测 | `needs-backtest` |
+| 日志有 `ERROR` | `high-priority` |
+| 日志有 `451` 或 `GEO` | `binance-blocked` |
+| `config.json` 中 `dry_run` 不为 `true` | `live-mode-warning` |
+| backtest `win_rate < 0.40` | `degraded` |
+| backtest `drawdown > 0.20` | `high-risk` |
+
+## Output
+
+Append findings to `/root/code/freqtrade/freqtrade-loop/STATE.md` under sections:
+
+```
+## Strategy Triage — <timestamp UTC>
+### needs-backtest
+### high-priority
+### binance-blocked
+### live-mode-warning
+### degraded
+### high-risk
+```
