@@ -1,0 +1,79 @@
+name: Freqtrade Loop - Backtest Sweeper
+
+on:
+  push:
+    paths:
+      - 'user_data/strategies/*.py'
+  workflow_dispatch:
+    inputs:
+      strategy_name:
+        description: 'Strategy class name'
+        required: true
+        type: string
+      strategy_file:
+        description: 'Path to strategy file'
+        required: true
+        type: string
+      git_commit:
+        description: 'Git commit SHA'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backtest-${{ github.event.inputs.strategy_name || 'manual' }}
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.git_commit || github.sha }}
+
+      - name: Identify changed strategy
+        id: identify
+        run: |
+          if [[ -n "${{ github.event.inputs.strategy_name }}" ]]; then
+            echo "strategy_name=${{ github.event.inputs.strategy_name }}" >> $GITHUB_ENV
+            echo "strategy_file=${{ github.event.inputs.strategy_file }}" >> $GITHUB_ENV
+            echo "git_commit=${{ github.event.inputs.git_commit || github.sha }}" >> $GITHUB_ENV
+          else
+            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'user_data/strategies/.*\.py$' | head -1)
+            echo "strategy_file=$CHANGED" >> $GITHUB_ENV
+            NAME=$(basename "$CHANGED" .py)
+            echo "strategy_name=$NAME" >> $GITHUB_ENV
+            echo "git_commit=${{ github.sha }}" >> $GITHUB_ENV
+          fi
+          echo "Strategy: ${{ env.strategy_name }}"
+          echo "File: ${{ env.strategy_file }}"
+
+      - name: Validate strategy path
+        run: |
+          if [[ ! "${{ env.strategy_file }}" =~ ^user_data/strategies/.*\.py$ ]]; then
+            echo "ERROR: Invalid strategy path: ${{ env.strategy_file }}"
+            exit 1
+          fi
+          echo "Path validated"
+
+      - name: Verify dry_run mode
+        run: |
+          grep -q '"dry_run": true' /root/code/freqtrade/user_data/config.json || (echo "ERROR: dry_run not enabled" && exit 1)
+          echo "dry_run confirmed"
+
+      - name: Run backtest
+        run: |
+          chmod +x /root/code/freqtrade/freqtrade-loop/scripts/loop-backtest.sh
+          bash /root/code/freqtrade/freqtrade-loop/scripts/loop-backtest.sh "${{ env.strategy_name }}" "${{ env.strategy_file }}" "${{ env.git_commit }}" || echo "Backtest completed with status $?"
+
+      - name: Commit backtest results
+        run: |
+          git config --local user.name 'Freqtrade Loop'
+          git config --local user.email 'loop@freqtrade.local'
+          git add freqtrade-loop/backtest-history.json freqtrade-loop/STATE.md freqtrade-loop/loop-ledger.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "chore: backtest ${{ env.strategy_name }} results [skip ci]"
+          git push || echo "Push skipped"

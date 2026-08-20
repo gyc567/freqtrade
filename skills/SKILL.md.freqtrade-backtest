@@ -1,0 +1,57 @@
+# SKILL.md — freqtrade-backtest
+
+## Triggers
+- "backtest-sweeper 调用"
+- "手动 /loop backtest <strategy>"
+
+## Pre-check
+
+### 1. 检查 dry_run
+```bash
+grep '"dry_run": true' /root/code/freqtrade/user_data/config.json
+```
+如果 `dry_run` 不为 `true`，**拒绝执行**并标记 `live-mode-warning`。
+
+### 2. 检查数据存在
+```bash
+ls /root/code/freqtrade/user_data/data/
+```
+如果 `data/` 为空，**拒绝执行**。
+
+### 3. ⚠️ Binance API 451 处理 (关键)
+如果 Binance API 返回 `451` / `GEO-blocked` 错误:
+1. **立即**标记 `data_source = offline-mock`
+2. **立即**切换为使用本地数据
+3. **继续执行** backtest，不 abort
+
+## Command Template
+
+```bash
+/root/code/freqtrade/.venv/bin/python -m freqtrade backtesting \
+  --strategy {name} \
+  --timeframe 4h \
+  --timerange 20230101-20231231 \
+  --config /root/code/freqtrade/user_data/config.json
+```
+
+## Output
+
+Parse `/root/code/freqtrade/user_data/backtest_results/*.json` for key metrics:
+
+| Metric | Key in JSON |
+|--------|-------------|
+| win_rate | `...` (根据实际输出结构定位) |
+| max_drawdown | `...` |
+| profit_mean | `...` |
+| total_trades | `...` |
+
+## Thresholds
+
+| Condition | Flag |
+|-----------|------|
+| `win_rate < 0.40` | `degraded` |
+| `drawdown > 0.20` | `degraded` |
+
+## State
+
+Append results to `/root/code/freqtrade/freqtrade-loop/STATE.md` under `## Backtest Results`.

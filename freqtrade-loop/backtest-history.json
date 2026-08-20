@@ -1,0 +1,27 @@
+{
+  "runs": [
+    {
+      "run_at": "2026-08-20T12:56:48.815181Z",
+      "strategy_name": "BTCHarmonic4H",
+      "strategy_file": "user_data/strategies/BTCHarmonic4H.py",
+      "git_commit": "c9175bcda",
+      "timeframe": "4h",
+      "timerange": "20230101-20231231",
+      "data_source": "gate",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 0,
+        "win_rate": 0.0,
+        "profit_total": 0.0,
+        "max_drawdown": "0",
+        "profit_mean": 0.0,
+        "avg_duration": "0:00",
+        "sharpe": 0,
+        "sqn": 0.0
+      },
+      "config_used": "/root/code/freqtrade/user_data/config.gate.json",
+      "backtest_result_zip": "/root/code/freqtrade/user_data/backtest_results/backtest-result-2026-08-20_12-54-39.zip"
+    }
+  ]
+}

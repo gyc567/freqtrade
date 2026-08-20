@@ -1,0 +1,49 @@
+# Freqtrade Loop Engineering Token Budget
+# Controls resource consumption and emergency stops
+
+daily_token_limit: 800000
+weekly_token_limit: 4000000
+monthly_token_limit: 15000000
+
+patterns:
+  strategy-daily-triage:
+    tokens_per_run: 50000
+    description: "Daily review of strategy logs and performance metrics"
+    frequency: daily
+
+  backtest-sweeper:
+    tokens_per_run: 300000
+    description: "Run backtests across strategy variants with parameter sweeps"
+    frequency: on-demand
+
+  strategy-hyperopt-loop:
+    tokens_per_run: 2000000
+    description: "Hyperparameter optimization loop for strategy tuning"
+    frequency: weekly
+
+kill_conditions:
+  # Token exhaustion
+  - condition: "tokens_today > daily_token_limit"
+    severity: critical
+    action: emergency_stop
+
+  # Backtest reliability
+  - condition: "backtest_failure_count >= 3"
+    severity: critical
+    action: escalate
+    description: "3 consecutive failed backtests requires escalation"
+
+  # API health
+  - condition: "binance_api_error_count >= 5"
+    severity: critical
+    action: emergency_stop
+    description: "API errors likely indicate GEO block (451) - stop immediately"
+
+  # Modification rate limiting
+  - condition: "same_strategy_modified_count >= 5"
+    severity: warning
+    action: warn
+    description: "Same strategy modified 5+ times in one day"
+
+emergency_stop: false
+alert_on_kill: true

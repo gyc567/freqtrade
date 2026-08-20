@@ -1,0 +1,38 @@
+# SKILL.md — freqtrade-hyperopt
+
+## Triggers
+- "手动触发 /loop hyperopt <strategy>"
+
+## Pre-check
+
+### 1. Token Budget Check
+读取 `/root/code/freqtrade/freqtrade-loop/loop-budget.yaml`。
+如果当天已消耗 **> 600k tokens**，则:
+1. **SKIP** 执行
+2. 在 `STATE.md` 标记 `## Pending Hyperopt Approvals — needs human-approve`
+3. **终止** (exit code 1)
+
+### 2. Weekly Limit
+每个策略 **每周最多 1 次** hyperopt。
+检查 `/root/code/freqtrade/freqtrade-loop/STATE.md` 中的历史记录：
+如果该策略本周已执行过 hyperopt，**拒绝执行**。
+
+## Command
+
+```bash
+/root/code/freqtrade/.venv/bin/python -m freqtrade hyperopt \
+  --strategy {name} \
+  --timeframe 4h \
+  --timerange 20230101-20231231 \
+  --epochs 100 \
+  --hyperopt-loss ShortHyperOptLoss \
+  --config /root/code/freqtrade/user_data/config.json
+```
+
+## ⚠️ 禁止行为
+- **NEVER** auto-write results to `config.json`
+- **NEVER** auto-apply hyperopt results to any file
+
+## Output
+
+结果以 **note** 形式写入 `/root/code/freqtrade/freqtrade-loop/STATE.md` 的 `## Pending Hyperopt Approvals` 区域，供人工 review，禁止自动合并。

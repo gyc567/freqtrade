@@ -1,0 +1,67 @@
+# Freqtrade Loop Engineering Security Gate
+# Controls which files the loop system can read/write/modify
+
+auto_merge: false
+max_attempts_per_item: 3
+max_backtest_runs_per_week: 10
+
+deny:
+  # API keys and secrets - NEVER touch
+  - user_data/config.json
+
+  # Database files - NEVER touch
+  - "*.db"
+  - "*.sqlite"
+  - "*.sqlite3"
+  - user_data/*.sqlite
+  - user_data/freqtrade.db
+  - user_data/tradesv3.sqlite
+
+  # Core code - read only, no modification
+  - freqtrade/*.py
+
+  # Python dependencies
+  - .venv/
+
+  # Server configuration
+  - /etc/nginx/
+  - /etc/systemd/
+
+  # SSH keys
+  - /root/.ssh/
+
+  # Environment files containing secrets
+  - ".env"
+  - ".env.*"
+
+  # Build artifacts
+  - freqtrade.egg-info/
+
+  # All config files in user_data root
+  - user_data/*.json
+  - user_data/*.toml
+  - user_data/*.yaml
+  - user_data/*.yml
+
+  # Hyperopt and other caches
+  - user_data/hyperopt_results/
+  - user_data/optimize_results/
+
+allow:
+  # The loop system itself
+  - freqtrade-loop/
+
+  # Allowlisted subdirectories
+  - user_data/strategies/
+  - user_data/backtest_results/
+  - user_data/logs/
+
+  # Strategy files (for modification)
+  - "user_data/strategies/**/*.py"
+
+  # Backtest result files (read/write)
+  - "user_data/backtest_results/**/*.json"
+  - "user_data/backtest_results/**/*.csv"
+
+  # Log files (read only)
+  - "user_data/logs/**/*.log"

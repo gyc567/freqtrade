@@ -1,0 +1,47 @@
+name: Freqtrade Loop - Daily Triage
+
+on:
+  schedule:
+    - cron: '0 8 * * 1-5'  # Weekdays 08:00 UTC
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            freqtrade-loop/
+            skills/
+            user_data/strategies/
+            user_data/backtest_results/
+            user_data/logs/
+          sparse-checkout-cone-mode: false
+
+      - name: Verify dry_run mode
+        run: |
+          echo "Checking dry_run in config..."
+          grep -q '"dry_run": true' /root/code/freqtrade/user_data/config.json || (echo "ERROR: dry_run not enabled" && exit 1)
+          echo "dry_run confirmed"
+
+      - name: Run triage script
+        run: |
+          chmod +x /root/code/freqtrade/freqtrade-loop/scripts/loop-triage.sh
+          bash /root/code/freqtrade/freqtrade-loop/scripts/loop-triage.sh
+
+      - name: Read STATE.md
+        run: cat /root/code/freqtrade/freqtrade-loop/STATE.md
+
+      - name: Commit STATE.md update
+        run: |
+          git config --local user.name 'Freqtrade Loop'
+          git config --local user.email 'loop@freqtrade.local'
+          git add freqtrade-loop/STATE.md freqtrade-loop/loop-ledger.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m 'chore: daily triage state update [skip ci]'
+          git push || echo "Push skipped (no changes)"
