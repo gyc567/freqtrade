@@ -257,10 +257,12 @@ class Exchange:
         logger.info(f"Using CCXT {ccxt.__version__}")
 
         # Don't remove exchange credentials for dry-run or if always_require_api_keys is set
-        remove_exchange_credentials(
-            exchange_conf,
-            not self._ft_has["always_require_api_keys"] and self._config.get("dry_run", False),
-        )
+        # Skip if exchange_conf was explicitly provided (caller already handled credentials)
+        if exchange_config is None:
+            remove_exchange_credentials(
+                exchange_conf,
+                not self._ft_has["always_require_api_keys"] and self._config.get("dry_run", False),
+            )
         self.log_responses = exchange_conf.get("log_responses", False)
 
         # Assign this directly for easy access
