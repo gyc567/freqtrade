@@ -1,5 +1,5 @@
 # Freqtrade Loop State
-Last run: 2026-08-21T13:24:10Z
+Last run: 2026-08-21T14:00:07Z
 Loop version: 0.1.0
 
 ## Strategies
@@ -473,7 +473,69 @@ Then monitor at http://localhost:8088. After 30 days, compare realized vs backte
 3. **Walk-forward validation** — slice 2023-2025 into 4 quarterly windows, train on 3, test on 1, validate Sharpe stability.
 4. **Forward test (dry_run)** — user-initiated after manual review.
 
+---
+
+## Cycle 9 — NostalgiaForInfinity Baseline (2026-08-21T14:00Z) — **functional, needs tuning**
+
+User provided NFI-inspired template with multi-timeframe (4h + 1d) pullback-in-uptrend, confidence scoring, ATR-based dynamic stoploss, and cascade custom_exit. Built as a new strategy file separate from TrendRider4h (which is the MR-Pro mean-reversion architecture). User explicitly requested: 4h BTC/USDT, functional backtest, no hyperopt this turn.
+
+### 9.1 — Strategy file (`user_data/strategies/NostalgiaForInfinity.py`)
+
+**Architecture** (NFI-style):
+- Direction: 4h regime (close > ema_200, ema_50 > ema_200, +DI > -DI) AND 1d regime (close > ema_200_1d)
+- Entry: pullback to slow EMA (low <= ema_slow, close > open) with RSI in healthy range, ADX > threshold, volume confirmation
+- Confidence score (0-100) from 5 signals (bull regime, ADX, volume, MACD, DI), filtered by `min_confidence` (default 60)
+- Exit cascade: ROI ladder (4h: 0=4%, 48=2.5%, 96=1.5%, 168=0.5%) + RSI>70 overbought + EMA death cross + 4h early-loss cut + trend break
+- Custom stoploss: ATR-based floor (entry - 1.5×ATR, relaxed to 1.1× after 3% profit)
+- Protections: CooldownPeriod(20) + StoplossGuard(720/3/60) + MaxDrawdown(1440/0.10/300)
+- Hyperopt: 9 buy params + 1 sell param + ROI ladder via `HyperOpt` class (avoid Cycle 8 auto-discovery bug)
+
+**JSON override trap verified clean**: `ls user_data/strategies/*.json` returns empty before run.
+
+### 9.2 — Baseline backtest (2023-2025 BTC/USDT 4h)
+
+**Result: 24 trades, 50.0% WR, -40.52 USDT, 45.25 USDT DD, Sharpe -1.01, Calmar -1.59**
+
+| Year | Trades | WR | Profit |
+|---|---|---|---|
+| 2023 | 6 | 33.3% | -11.18 USDT |
+| 2024 | 10 | 50.0% | -21.62 USDT |
+| 2025 | 8 | 62.5% | -7.72 USDT |
+
+**Exit reason breakdown**:
+- `roi` (4% target): 12 trades @ 100% WR, +24.83 USDT, avg duration 0.1h
+- `trailing_stop_loss` (custom_stoploss): 9 trades @ 0% WR, -51.28 USDT, avg duration 0.2h
+- `ema_cross`: 2 trades @ 0% WR, -7.27 USDT, avg duration 0.2h
+- `early_loss_cut_4h`: 1 trade @ 0% WR, -6.80 USDT
+
+**Average trade duration: 0.2h** (most trades close on the same 4h bar they opened)
+
+### 9.3 — Diagnosis
+
+The strategy is **functional but the R:R is asymmetric**:
+- Winners: +24.83 USDT total (avg +2.07/trade)
+- Losers: -51.28 USDT total (avg -5.70/trade)
+- Avg losers are 2.75x larger than winners
+
+**Root causes**:
+1. **ROI ladder too tight**: 4% target at 0h is being hit on the same 4h bar as entry (the bar's open→close range > 4%) — this isn't a "win", it's noise.
+2. **ATR(14) on 4h is wide**: 1.5×ATR ≈ 2.25-4.5% of price on BTC 4h, but the typical pullback depth is 3-5%. SL is being triggered by normal pullback continuation.
+3. **Entry timing**: pullback-to-EMA entries happen during down-trending legs of the daily cycle. The 4h bounce isn't always sustained.
+4. **No volume spike filter**: the template uses `volume_ratio > 1.0` but doesn't differentiate panic-sell capitulation from normal vol.
+
+### 9.4 — Recommended next step (Cycle 10)
+
+1. **Hyperopt sweep** (100+ epochs) on the existing 9 buy params + 1 sell param + ROI ladder + stoploss space. The architecture is sound; the parameters need data-driven tuning.
+2. **Tighten entry conditions** — add volume spike (>1.5× not just >1.0), RSI momentum (rising RSI not just any RSI in range), and 1d slope filter (not just EMA200 level).
+3. **Wider SL or faster TP** — pick a side. Current 4%/1.5×ATR is R:R ≈ 1:1.1. Need 2:1 or better.
+4. **Compare to TrendRider4h** — once hyperopt is done, the two strategies can be combined via freqtrade's strategy switching or run in parallel.
+
+### 9.5 — Files modified
+
+- `user_data/strategies/NostalgiaForInfinity.py` (NEW, 17.8 KB)
+- `freqtrade-loop/STATE.md` (this section)
+
 ## Loop Health
-- Tokens today: ~125,000 (24 backtest runs + 1 hyperopt run)
-- Runs today: 24
+- Tokens today: ~135,000 (24 backtest runs + 1 hyperopt run + 1 NFI backtest)
+- Runs today: 25
 - Budget status: OK (800,000 daily limit)
