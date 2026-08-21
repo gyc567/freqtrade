@@ -1,0 +1,96 @@
+{
+  "runs": [
+    {
+      "run_at": "2026-08-21T05:13:33.399574Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 0.6,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-21T05:14:52.604850Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 5.1,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-21T05:16:53.860523Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 4.3,
+      "status": "success",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-21T05:18:43.871612Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 0.6,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-21T05:21:53.754624Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 4.2,
+      "status": "success",
+      "best_params": {
+        "adx_max": 33,
+        "rsi_oversold_max": 37,
+        "sl_atr_mult": 1.754,
+        "tp_atr_mult": 2.864,
+        "volume_factor": 1.004
+      },
+      "best_epoch": 55,
+      "best_epoch_stats": {
+        "trades": 20,
+        "win_rate": 0.60,
+        "profit_total": 115.338,
+        "drawdown": 25.377,
+        "avg_duration": "1 day, 7:48:00",
+        "objective": -1.02487
+      },
+      "best_loss": -1.02487,
+      "best_total_profit": 115.338,
+      "var_change_vs_default": {
+        "adx_max": "40 -> 33 (tighter trend filter)",
+        "rsi_oversold_max": "35 -> 37 (slightly more permissive)",
+        "sl_atr_mult": "1.5 -> 1.754 (wider SL tolerance)",
+        "tp_atr_mult": "3.0 -> 2.864 (slightly tighter TP)",
+        "volume_factor": "1.0 -> 1.004 (no change)"
+      }
+    }
+  ]
+}

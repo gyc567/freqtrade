@@ -1,7 +1,930 @@
 {
   "ledger_version": "1.0.0",
-  "runs": [],
+  "runs": [
+    {
+      "timestamp": "2026-08-20T13:38:51.140681Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:39:01.583059Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:39:06.100028Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:39:09.861741Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:39:21.773776Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:39:35.378333Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:40:42.270987Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:42:03.154857Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:42:13.307103Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:42:19.919535Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:08.488360Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:16.166332Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:24.433058Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:40.391033Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:44.177952Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:47.849395Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:43:51.436435Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:44:08.835790Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:44:20.497440Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:44:32.153071Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:44:40.839326Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:44:57.257410Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:45:06.662466Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:45:15.638358Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:46:02.262170Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:46:21.317004Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:46:32.484244Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:46:58.355519Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:47:05.008578Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:47:09.053189Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:47:25.707053Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:47:29.663156Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:48:05.133294Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:48:11.843448Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:48:43.789129Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:49:05.330508Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T13:55:54.925832Z",
+      "action": "hyperopt",
+      "strategy": "TrendRider4h",
+      "epochs": 5,
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:56:03.156224Z",
+      "action": "hyperopt",
+      "strategy": "TrendRider4h",
+      "epochs": 5,
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:56:27.584253Z",
+      "action": "hyperopt",
+      "strategy": "TrendRider4h",
+      "epochs": 3,
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:56:59.986101Z",
+      "action": "hyperopt",
+      "strategy": "TrendRider4h",
+      "epochs": 3,
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T13:57:05.599723Z",
+      "action": "hyperopt",
+      "strategy": "TrendRider4h",
+      "epochs": 3,
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:35:35.085740Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:39:56.542437Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:41:51.309193Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:47:41.872416Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:47:43.074321Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:47:44.248347Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:47:45.435146Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:48:51.101720Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:48:52.299274Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:48:53.506975Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:48:54.716929Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:51:24.619517Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:53:58.784357Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:06.073890Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:07.467749Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:08.837412Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:26.684173Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:37.126216Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:38.549335Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:54:39.980388Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:55:31.517469Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T14:59:31.361488Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:00:14.483975Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:01:22.207813Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T15:02:06.099868Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:02:39.504044Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-20T15:02:54.547497Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:03:29.339063Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:03:49.885323Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:13.201276Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:33.445163Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:42.319243Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:43.492878Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:52.775489Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:53.952905Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-20T15:04:55.138364Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:22:13.497611Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:22:26.448269Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:23:32.224490Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:23:53.853638Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:24:07.906044Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:24:17.262688Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:24:32.654247Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:25:57.619838Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:26:53.005804Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:27:23.303909Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:27:41.364419Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:28:18.403425Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:28:44.801657Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:28:49.238269Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:29:05.134412Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:29:09.690884Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:29:13.659051Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:30:35.927627Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:31:08.584900Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:31:23.838053Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:31:28.141781Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:31:31.862921Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:31:53.629426Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:32:54.176116Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:33:13.038641Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:33:27.416804Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:33:31.668749Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:33:57.167344Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:34:54.819174Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:36:28.398929Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:36:32.778230Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:39:10.909936Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:39:27.176845Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:40:28.010886Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:40:41.022005Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:41:12.499419Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:41:48.841717Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:43:23.942022Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T02:43:35.553292Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:44:29.626431Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T02:56:56.704930Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:15:02.771455Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:18:18.908536Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:02.942230Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:06.086255Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:07.317133Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:15.075328Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:16.178634Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T03:19:21.268759Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T05:03:48.047844Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T05:04:17.223638Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-21T05:05:44.219175Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T05:21:44.397331Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-21T05:24:10.395360Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    }
+  ],
   "total_tokens_spent": 0,
-  "total_runs": 0,
+  "total_runs": 131,
   "last_reset": "2026-08-20T00:00:00Z"
 }
