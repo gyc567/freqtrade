@@ -133,6 +133,62 @@
       "best_params": {},
       "best_loss": null,
       "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:12:06.545395Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 200,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 4.9,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:13:41.991431Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 200,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 6.8,
+      "status": "success",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:13:46.264009Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 200,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 0.6,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:13:49.306118Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 200,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 0.6,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
     }
   ]
 }

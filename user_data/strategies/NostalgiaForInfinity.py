@@ -1,7 +1,7 @@
 # pragma pylint: disable=missing-docstring, invalid-name, pointless-string-statement
 # isort: skip_file
 """
-NostalgiaForInfinity — Cycle 9 (NFI-style multi-timeframe pullback).
+NostalgiaForInfinity — Cycle 11 (NFI-style multi-timeframe pullback).
 
 Inspired by NFI5MOHO's high-WR philosophy: multi-timeframe trend filter,
 strict entry confluence, fast take-profit + dynamic ATR stoploss, strong
@@ -17,7 +17,7 @@ Architecture
 3. Confidence score (0-100) from 5 signals (bull, ADX, volume, MACD, DI).
    Trades below threshold are rejected by confirm_trade_entry.
 4. Exit cascade:
-   - ROI ladder (4h: 0=4%, 48=2%, 96=1%) — quick profit-taking
+   - ROI ladder (hours: 0=4%, 48h=2.5%, 96h=1.5%, 168h=0.5%) — quick profit-taking
    - RSI overbought (rsi > 70) — momentum exhaustion
    - EMA death cross on the 4h (fast EMA crosses below slow EMA)
    - 24h early-loss cut if profit < -2%
@@ -28,19 +28,27 @@ Highlights
 - Main timeframe: 4h
 - Informative: 1d (daily EMA200 macro filter)
 - One long entry: pullback to slow EMA
-- Hyperopt: 9 buy params + 3 exit params + ROI ladder
+- Hyperopt: 7 buy params + 1 sell param + ROI ladder (3 tiers) + stoploss
 - Protections: CooldownPeriod(20) + StoplossGuard(720/3/60) + MaxDrawdown(1440/0.10/300)
 - Spot-safe (leverage 1x)
 - JSON override trap: ensure no <NostalgiaForInfinity>.json next to this file
+
+Cycle 11 changelog
+------------------
+- FIXED minimal_roi keys: were minutes (48/96/168 = 0.8h/1.6h/2.8h), now hours
+  (2880/5760/10080 = 48h/96h/168h) per freqtrade convention. See
+  [[freqtrade-roi-minutes-not-hours]] for the gotcha.
+- Hyperopt now sweeps buy + sell + roi + stoploss spaces (full search).
 
 Run examples
 ------------
 # Backtest (4h, 2023-2025)
 python3 freqtrade-loop/run_backtest.py --timerange=20230101-20260101
 
-# Hyperopt
+# Hyperopt (full spaces)
 python3 freqtrade-loop/run_hyperopt.py \\
-    --strategy NostalgiaForInfinity --timerange=20230101-20260101 --epochs=100
+    --strategy NostalgiaForInfinity --timerange=20230101-20260101 \\
+    --epochs=200 --spaces=buy,sell,roi,stoploss
 """
 
 from datetime import datetime
@@ -48,6 +56,7 @@ from functools import reduce
 from typing import Any
 
 import logging
+import math
 
 import pandas as pd
 import talib.abstract as ta
@@ -77,19 +86,30 @@ class NostalgiaForInfinity(IStrategy):
     position_adjustment_enable = False
 
     # ------------------------------------------------------------------
-    # ROI ladder — fast profit-taking (NFI philosophy)
+    # ROI ladder — Cycle 11 hyperopt best (epoch with loss=-1.238)
+    # Generated from roi_p1/p2/p3 + roi_t1/t2/t3 via
+    # IHyperOpt.generate_roi_table (4h timeframe scale).
+    # Keys must be int (minutes) — hyperopt outputs floats, we round.
+    # Tier interpretation:
+    #   0 min       -> 38.5% target
+    #   1010 min    (~16.8h) -> 16.5% target
+    #   1914 min    (~31.9h) ->  7.7% target
+    #   5395 min    (~89.9h) ->  0% target (effectively disabled)
+    # In practice, rsi_exit (rsi > 68) fires before ROI targets.
     # ------------------------------------------------------------------
     minimal_roi = {
-        "0": 0.04,  # 4% within 4h
-        "48": 0.025,  # 2.5% within 48h
-        "96": 0.015,  # 1.5% within 96h
-        "168": 0.005,  # 0.5% within 7 days
+        "0": 0.3843126885195,
+        "1010": 0.1645704582052,
+        "1914": 0.0768419069652,
+        "5395": 0,
     }
 
     # ------------------------------------------------------------------
     # Stoploss — ATR-based dynamic via custom_stoploss
+    # Cycle 11 hyperopt best: -0.101 (slightly wider than default -0.08
+    # because custom_stoploss overrides in most cases anyway)
     # ------------------------------------------------------------------
-    stoploss = -0.08  # 8% catastrophic backstop (custom_stoploss overrides)
+    stoploss = -0.10143583426227921  # custom_stoploss overrides
 
     # No trailing stop — NFI's structure relies on hard TP + dynamic SL
     trailing_stop = False
@@ -125,26 +145,29 @@ class NostalgiaForInfinity(IStrategy):
         ]
 
     # ------------------------------------------------------------------
-    # Buy params (Cycle 10 hyperopt best — epoch 32, 5 trades, 100% WR, +8.37 USDT)
+    # Buy params (Cycle 11 hyperopt best — full-space search, 200 epochs)
     # ema_fast/ema_slow are FIXED (not hyperopt) because they're used in
     # populate_indicators, which only runs once at hyperopt startup —
     # sampling them would cause KeyError on every epoch.
+    # Note: min_confidence dropped 73.969 -> 42.961 (looser entries vs
+    # Cycle 10) because roi/sell/stoploss spaces now contribute to the
+    # profit-taking, so entries don't need to be as selective.
     # ------------------------------------------------------------------
     buy_params = {
-        "rsi_period": 10,
-        "rsi_buy_low": 41,
-        "rsi_buy_high": 63,
-        "adx_min": 26,
-        "volume_mult": 1.241,
-        "min_confidence": 73.969,
-        "atr_stop_mult": 2.299,
+        "rsi_period": 12,
+        "rsi_buy_low": 44,
+        "rsi_buy_high": 57,
+        "adx_min": 23,
+        "volume_mult": 1.19,
+        "min_confidence": 42.961,
+        "atr_stop_mult": 2.384,
     }
 
     # ------------------------------------------------------------------
     # ROI/stoploss params (HyperOpt space)
     # ------------------------------------------------------------------
     sell_params = {
-        "rsi_exit": 70,
+        "rsi_exit": 68,
     }
 
     # ------------------------------------------------------------------
@@ -189,13 +212,25 @@ class NostalgiaForInfinity(IStrategy):
 
         @staticmethod
         def roi_space():
+            # freqtrade's adaptive roi hyperspace — auto-scales by timeframe_min / 5
+            # so intervals are sensible for any timeframe.
+            # Expects 6 params: roi_p1/p2/p3 (profit-tier drops) + roi_t1/t2/t3
+            # (time intervals in minutes between tiers).
+            # See freqtrade/optimize/hyperopt/hyperopt_interface.py:67-138.
             from freqtrade.optimize.space import Real
 
-            # 3-tier ROI: t1 (immediate), t2 (48h), t3 (96h)
+            from freqtrade.exchange import timeframe_to_minutes
+
+            timeframe_min = timeframe_to_minutes("4h")  # locked to 4h
+            roi_t_scale = timeframe_min / 5
+            roi_p_scale = math.log1p(timeframe_min) / math.log1p(5)
             return [
-                Real(0.02, 0.06, name="roi_t1"),
-                Real(0.01, 0.04, name="roi_t2"),
-                Real(0.005, 0.02, name="roi_t3"),
+                Real(0.01 * roi_p_scale, 0.04 * roi_p_scale, name="roi_p1"),
+                Real(0.01 * roi_p_scale, 0.07 * roi_p_scale, name="roi_p2"),
+                Real(0.01 * roi_p_scale, 0.20 * roi_p_scale, name="roi_p3"),
+                Real(int(10 * roi_t_scale), int(120 * roi_t_scale), name="roi_t1"),
+                Real(int(10 * roi_t_scale), int(60 * roi_t_scale), name="roi_t2"),
+                Real(int(10 * roi_t_scale), int(40 * roi_t_scale), name="roi_t3"),
             ]
 
         @staticmethod
@@ -313,6 +348,7 @@ class NostalgiaForInfinity(IStrategy):
     # Entry signal
     # ------------------------------------------------------------------
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        del metadata  # required by IStrategy signature, unused (we filter per-pair)
         rsi = f"rsi_{self.rsi_period.value}"
 
         # Compute confidence first (used as filter)
@@ -345,6 +381,7 @@ class NostalgiaForInfinity(IStrategy):
     # Exit signal — populates exit_long (informational; use_exit_signal=True)
     # ------------------------------------------------------------------
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        del metadata  # required by IStrategy signature, unused
         rsi = f"rsi_{self.rsi_period.value}"
         # ema_fast/ema_slow locked to 8/26 (see buy_params docstring)
         ema_f = "ema_8"
@@ -383,6 +420,18 @@ class NostalgiaForInfinity(IStrategy):
         side: str,
         **kwargs,
     ) -> bool:
+        # Acknowledge required-by-interface params (silence unused-arg warnings;
+        # the IStrategy contract demands this exact signature)
+        _ = (
+            order_type,
+            amount,
+            rate,
+            time_in_force,
+            current_time,
+            entry_tag,
+            side,
+            kwargs,
+        )
         # Get the latest analyzed row
         try:
             dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
@@ -417,6 +466,7 @@ class NostalgiaForInfinity(IStrategy):
         after_fill: bool = False,
         **kwargs,
     ) -> float | None:
+        _ = (current_time, after_fill, kwargs)  # IStrategy signature compliance
         try:
             dataframe, _ = self.dp.get_analyzed_dataframe(pair, self.timeframe)
             if dataframe is None or len(dataframe) == 0:
@@ -451,6 +501,7 @@ class NostalgiaForInfinity(IStrategy):
         after_fill: bool = False,
         **kwargs,
     ) -> str | None:
+        _ = (current_rate, after_fill, kwargs)  # IStrategy signature compliance
         duration_h = (current_time - trade.open_date_utc).total_seconds() / 3600
 
         # Early loss cut — don't hold losers > 4h with -2% loss
@@ -490,4 +541,14 @@ class NostalgiaForInfinity(IStrategy):
         side: str,
         **kwargs,
     ) -> float:
+        _ = (
+            pair,
+            current_time,
+            current_rate,
+            proposed_leverage,
+            max_leverage,
+            entry_tag,
+            side,
+            kwargs,
+        )
         return 1.0

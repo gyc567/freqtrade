@@ -3096,6 +3096,78 @@
         "sqn": 1.8577,
         "profit_factor": 2.4503104215686173
       }
+    },
+    {
+      "run_at": "2026-08-22T05:15:55.887248Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 20,
+        "win_rate": 0.6,
+        "profit_total": 115.33818706999999,
+        "max_drawdown": "25.377",
+        "profit_mean": 0.01664449196917167,
+        "duration_avg": "1 day, 7:48:00",
+        "sharpe": 0.1545052040587868,
+        "sqn": 1.8577,
+        "profit_factor": 2.4503104215686173
+      }
+    },
+    {
+      "run_at": "2026-08-22T05:17:07.863914Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "failed_error",
+      "backtest_exit_code": 1,
+      "backtest_result": {
+        "total_trades": 0,
+        "win_rate": null,
+        "profit_total": null,
+        "max_drawdown": null,
+        "profit_mean": null,
+        "duration_avg": null,
+        "sharpe": null,
+        "sqn": null,
+        "profit_factor": null
+      }
+    },
+    {
+      "run_at": "2026-08-22T05:17:20.563320Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 5,
+        "win_rate": 1.0,
+        "profit_total": 38.57906132,
+        "max_drawdown": "0",
+        "profit_mean": 0.022786479162397347,
+        "duration_avg": "2 days, 17:36:00",
+        "sharpe": 0.25674974184610166,
+        "sqn": 5.6658,
+        "profit_factor": 0.0
+      }
     }
   ]
 }

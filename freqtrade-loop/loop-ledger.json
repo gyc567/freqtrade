@@ -922,9 +922,30 @@
       "strategy": "TrendRider4h",
       "tokens_spent": 0,
       "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T05:15:55.887248Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T05:17:07.863914Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-22T05:17:20.563320Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity",
+      "tokens_spent": 0,
+      "status": "success"
     }
   ],
   "total_tokens_spent": 0,
-  "total_runs": 131,
+  "total_runs": 134,
   "last_reset": "2026-08-20T00:00:00Z"
 }
