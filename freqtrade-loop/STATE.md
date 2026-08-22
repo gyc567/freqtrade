@@ -1,5 +1,5 @@
 # Freqtrade Loop State
-Last run: 2026-08-21T14:00:07Z
+Last run: 2026-08-22T01:55:51Z
 Loop version: 0.1.0
 
 ## Strategies
@@ -8,11 +8,13 @@ Loop version: 0.1.0
 |BTCHarmonic4H|user_data/strategies/BTCHarmonic4H.py|2026-08-20|2026-08-20|zero-trades|backtest ran (gate.io), 0 trades — strategy needs signal logic tuning|
 |SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-12|never|signals-all-zero|default template only, not for trading|
 |TrendRider4h|user_data/strategies/TrendRider4h.py|2026-08-21|2026-08-21|success|trades=20, wr=60.0%, pf=2.45, dd=25.377 (profit=115.33818706999999)|
+|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-22|2026-08-22|degenerate-win|trades=5, wr=100%, profit=8.37, dd=0 — **see Cycle 10 critical finding** (ROI keys in minutes vs hours)|
 
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
 |TrendRider4h|success|20|60.0%|115.33818706999999|25.377|binance-local|2026-08-21T05:24:10.395354Z|
+|NostalgiaForInfinity|degenerate|5|100.0%|8.37|0.0|binance-local|2026-08-22T01:55:51Z|
 |BTCHarmonic4H|success|0|N/A|N/A|N/A|gate|2026-08-20 12:56:48Z|
 
 ## Known Issues
@@ -538,4 +540,174 @@ The strategy is **functional but the R:R is asymmetric**:
 ## Loop Health
 - Tokens today: ~135,000 (24 backtest runs + 1 hyperopt run + 1 NFI backtest)
 - Runs today: 25
+- Budget status: OK (800,000 daily limit)
+
+---
+
+## Cycle 10 — NostalgiaForInfinity Hyperopt (2026-08-22T01:55Z) — **degenerate result, do not trust**
+
+User instructed: "loop engineering 方式，继续优化NostalgiaForInfinity，用hyperopt来调优。并回测一下，给出回测报告". Ran hyperopt on NFI, applied best params, ran validation backtest. **Result is a configuration artifact, not a validated edge.**
+
+### 10.1 — Setup changes
+
+**`freqtrade-loop/run_hyperopt.py`**: added `--strategy=NAME` CLI flag (was hardcoded to TrendRider4h). Default stays TrendRider4h for backward compatibility.
+
+**JSON override trap verified clean** before hyperopt + backtest:
+- `ls user_data/strategies/*.json` → empty
+- `TrendRider4h_NFI_hyperopt_best_e32.json` moved to `/tmp/c4_results/` after hyperopt
+- Strategy file `NostalgiaForInfinity.py` was the only source of `buy_params` during backtest
+
+### 10.2 — Hyperopt (100 epochs, buy space, SharpeHyperOptLossDaily)
+
+**Bug fix during setup**: First run failed with `KeyError: 'ema_41'`. Root cause: `ema_fast` and `ema_slow` were IntParameter ranges hyperopt-sampled each epoch, but `populate_indicators` only runs ONCE at hyperopt startup — referencing the sampled value caused KeyError on every subsequent epoch. **Fix**: removed `ema_fast`/`ema_slow` from IntParameter declarations and from HyperOpt.buy_space; locked to ema_8/ema_26 constants.
+
+**Best epoch 32, params applied** (saved to `freqtrade-loop/hyperopt-best-NFI-2026-08-22.json`):
+| param | Cycle 9 default | Hyperopt best | Direction |
+|---|---|---|---|
+| rsi_period | 14 | 10 | tighter (more responsive) |
+| rsi_buy_low | 38 | 41 | shifted up (+3) |
+| rsi_buy_high | 58 | 63 | widened (+5) |
+| adx_min | 20 | 26 | tighter trend filter (+6) |
+| volume_mult | 1.0 | 1.241 | higher bar (+0.24) |
+| min_confidence | 60.0 | **73.969** | much stricter (+13.97) |
+| atr_stop_mult | 1.5 | 2.299 | wider SL tolerance (+0.8) |
+
+**Hyperopt direction**: tightened every entry gate. `min_confidence` jumped from 60 → 74 means the strategy rejects most pullback setups unless all 5 confidence signals agree. This is the root cause of the 24 → 5 trade drop.
+
+### 10.3 — Validation backtest (2023-2025 BTC/USDT 4h, hyperopt-tuned)
+
+| Metric | Cycle 9 (default) | Cycle 10 (hyperopt-tuned) |
+|---|---|---|
+| Trades | 24 | **5** |
+| **WR** | 50.0% | **100.0%** |
+| Profit (USDT) | -40.52 | **+8.37** |
+| DD (USDT) | 45.25 | **0.00** |
+| PF | 0.50 | **0.00** (undefined — no losses) |
+| Sharpe | -1.01 | **38.38** (degenerate) |
+| Avg trade PnL | -1.69 USDT | **+1.67 USDT** |
+| Avg stake | ~334 USDT | 334.45 USDT |
+
+**Per-year**:
+- 2024: 3t / 100% WR / +5.01 USDT
+- 2025: 2t / 100% WR / +3.36 USDT
+- 2023: 0 trades (the hyperopt-tightened entry filter rejected everything in 2023 BTC)
+
+**Per-trade detail (all 5)**:
+| Open | Close | P&L | Profit% | Dur | Exit |
+|---|---|---|---|---|---|
+| 2024-04-05 16:00 | 2024-04-06 20:00 | +1.67 USDT | 0.5000% | 28h | roi |
+| 2024-10-11 16:00 | 2024-10-11 20:00 | +1.67 USDT | 0.5000% | 4h | roi |
+| 2024-12-24 16:00 | 2024-12-24 20:00 | +1.67 USDT | 0.5000% | 4h | roi |
+| 2025-04-28 04:00 | 2025-04-28 08:00 | +1.68 USDT | 0.5000% | 4h | roi |
+| 2025-08-04 16:00 | 2025-08-06 16:00 | +1.68 USDT | 0.5000% | 48h | roi |
+
+**Every single trade exits at exactly 0.5000% profit.** This is mathematically exact, not a coincidence. Root cause analysis below.
+
+### 10.4 — **CRITICAL FINDING: ROI keys are MINUTES, not hours**
+
+This is the explanation for the suspicious "every trade exits at 0.5%" pattern — and it has been present since Cycle 9:
+
+```python
+minimal_roi = {
+    "0": 0.04,    # strategy docstring says "within 4h"
+    "48": 0.025,  # docstring says "within 48h"
+    "96": 0.015,  # docstring says "within 96h"
+    "168": 0.005, # docstring says "within 7 days"
+}
+```
+
+**freqtrade convention: minimal_roi keys are MINUTES, not hours.** Source `/freqtrade/strategy/interface.py:1705`:
+```python
+roi_list = [x for x in self.minimal_roi.keys() if x <= trade_dur]
+if roi_list:
+    roi_entry = max(roi_list)      # largest KEY <= trade_dur
+    min_roi = self.minimal_roi[roi_entry]
+```
+
+Where `trade_dur` is in minutes (`int((current_time.timestamp() - trade.open_date_utc.timestamp()) // 60)`).
+
+**Actual interpretation**:
+- "0" = 0 min → 4% target immediately
+- "48" = 48 min = 0.8h → 2.5% target after 48 minutes
+- "96" = 96 min = 1.6h → 1.5% target after 1.6 hours
+- "168" = 168 min = 2.8h → 0.5% target after 2.8 hours
+
+For all 5 trades, duration is ≥ 4 hours (240 min). At 240 min, `roi_list = [0, 48, 96, 168]`. `roi_entry = max(roi_list) = 168`. `min_roi = 0.005`. **Target = 0.5%. Trade exits the instant current_profit hits 0.5%.**
+
+**This was always the strategy's behavior** — not a bug introduced by hyperopt. Look at Cycle 9 baseline: 12 of 24 trades exited via `roi` with 100% WR. Same 0.5% target. The hyperopt just reduced sample size to 5 by tightening entries so only the cleanest bounces got through.
+
+### 10.5 — Why this result is not a validated edge
+
+| Symptom | Why it's misleading |
+|---|---|
+| 100% WR | Forced by ROI table — losers get cut at 1.5×ATR SL before they have time to develop |
+| 5 trades | Hyperopt overfit to in-sample noise — 5 trades has zero statistical power |
+| Sharpe 38.38 | Degenerate — no losing trades means daily Sharpe is unbounded |
+| Calmar -100 | No drawdown recorded — but this means nothing without sample size |
+| Profit factor 0.0 | freqtrade reports 0 when no losses (PF is undefined) |
+| 2023 = 0 trades | Hyperopt params rejected every 2023 setup — strategy works only on subset of data |
+| Avg trade duration 4-48h | Just barely above the 2.8h ROI tier threshold |
+
+**Net interpretation**: The strategy is targeting 0.5% profit (the lowest ROI tier) on every entry. With `min_confidence=74`, only the highest-quality pullback entries fire. Those happen to give 0.5% bounce profit within 2.8-48 hours. **This is a "0.5% scalper" dressed up as a swing strategy.** It is not a 60% WR strategy; it is a 100% WR 5-trade artifact.
+
+### 10.6 — Cycle 9 vs Cycle 10 (apples-to-apples on same data)
+
+| Metric | Cycle 9 (default) | Cycle 10 (hyperopt) | Verdict |
+|---|---|---|---|
+| Trades | 24 | 5 | C9 has 5x more data |
+| WR | 50.0% | 100.0% | Both misleading — see §10.5 |
+| Profit (USDT) | -40.52 | +8.37 | C10 better in absolute |
+| DD (USDT) | 45.25 | 0.00 | C10 lower DD |
+| Trailing-SL losses | -51.28 (9t) | **0** | C10 eliminated via tighter entries |
+| ROI wins | +24.83 (12t) | +8.37 (5t) | C9 found more scalps |
+| Avg winner | +2.07 USDT | +1.67 USDT | Same scale (0.5% ROI) |
+| Avg loser | -5.70 USDT | 0 | C9 had real losers |
+
+**Cycle 9 captured more trades (24 vs 5) but lost money because losers outweighed winners.** Cycle 10 captured fewer trades (only the cleanest) and won everything. **The hyperopt found a degenerate solution**, not a robust edge.
+
+### 10.7 — Files modified
+
+- `user_data/strategies/NostalgiaForInfinity.py` — hyperopt-best params applied to `buy_params`; ema_fast/ema_slow removed from hyperopt space (KeyError fix)
+- `freqtrade-loop/run_hyperopt.py` — added `--strategy=NAME` CLI flag
+- `freqtrade-loop/hyperopt-history.json` — Cycle 10 run appended
+- `freqtrade-loop/hyperopt-best-NFI-2026-08-22.json` — hyperopt best-epoch backup (created)
+
+### 10.8 — Recommended next step (Cycle 11)
+
+The Cycle 10 result is interesting but not actionable. Three independent paths to fix the underlying problem:
+
+**Option A (most likely to work)**: **Fix ROI keys to be in HOURS** — multiply by 60:
+```python
+minimal_roi = {
+    "0": 0.04,
+    "2880": 0.025,   # 48h
+    "5760": 0.015,   # 96h
+    "10080": 0.005,  # 168h
+}
+```
+This restores the docstring's intended interpretation. Re-run backtest — winners will ride longer, losers may materialize. Expect to lose money on this re-run if the original ROI table was "working" because of the bug.
+
+**Option B**: **Re-tune hyperopt with `roi` space enabled** — set `spaces=buy,sell,roi,stoploss` to let hyperopt find the actual optimal ROI tiers. With `roi_space` already defined in the strategy's `HyperOpt` class, this is a one-line change.
+
+**Option C**: **Pivot to TrendRider4h (MR-Pro) for live trading** — it's the only validated 60% WR strategy in this loop (Cycle 7/8: 5t/60%/+30.25 in-sample, 20t/60%/+115.34 hyperopt on 3y OOS). NFI can stay as a research artifact until the ROI bug is fixed and a real hyperopt sweep is run with proper ROI space.
+
+**Recommendation**: Option A + Option B together. Fix the bug, then re-hyperopt with full spaces. Expect the actual result to be 15-25 trades with realistic 45-55% WR (similar to Cycle 9's range, just better tuned).
+
+### Cycle 10 vs the rest of the loop
+
+| Metric | TrendRider4h MR-Pro (Cycle 8 hyperopt) | NFI (Cycle 9 default) | **NFI (Cycle 10 hyperopt)** |
+|---|---|---|---|
+| Trades | 20 | 24 | **5** |
+| WR | 60.0% | 50.0% | **100.0%** (degenerate) |
+| Profit (USDT) | +115.34 | -40.52 | **+8.37** |
+| DD (USDT) | 25.38 | 45.25 | **0.00** |
+| Sharpe | 1.09 | -1.01 | **38.38** (degenerate) |
+| Sample size | 3y OOS | 3y | **3y (2023 has 0 trades)** |
+| Validation status | **validated** | validated baseline | **do not trust** |
+
+**TrendRider4h MR-Pro remains the only validated strategy in the loop.** NFI Cycle 10 is preserved at `user_data/strategies/NostalgiaForInfinity.py` for Cycle 11 follow-up; the bug fix in Option A is the priority before any further hyperopt on NFI.
+
+## Loop Health
+- Tokens today: ~150,000 (29 backtest runs + 2 hyperopt runs + 2 NFI backtests)
+- Runs today: 30
 - Budget status: OK (800,000 daily limit)

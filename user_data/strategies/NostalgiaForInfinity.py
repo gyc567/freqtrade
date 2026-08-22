@@ -125,18 +125,19 @@ class NostalgiaForInfinity(IStrategy):
         ]
 
     # ------------------------------------------------------------------
-    # Buy params (defaults — overridden by HyperOpt)
+    # Buy params (Cycle 10 hyperopt best — epoch 32, 5 trades, 100% WR, +8.37 USDT)
+    # ema_fast/ema_slow are FIXED (not hyperopt) because they're used in
+    # populate_indicators, which only runs once at hyperopt startup —
+    # sampling them would cause KeyError on every epoch.
     # ------------------------------------------------------------------
     buy_params = {
-        "ema_fast": 8,
-        "ema_slow": 26,
-        "rsi_period": 14,
-        "rsi_buy_low": 38,
-        "rsi_buy_high": 58,
-        "adx_min": 20,
-        "volume_mult": 1.0,
-        "min_confidence": 60,
-        "atr_stop_mult": 1.5,
+        "rsi_period": 10,
+        "rsi_buy_low": 41,
+        "rsi_buy_high": 63,
+        "adx_min": 26,
+        "volume_mult": 1.241,
+        "min_confidence": 73.969,
+        "atr_stop_mult": 2.299,
     }
 
     # ------------------------------------------------------------------
@@ -149,9 +150,7 @@ class NostalgiaForInfinity(IStrategy):
     # ------------------------------------------------------------------
     # Hyperopt parameter ranges
     # ------------------------------------------------------------------
-    # Buy space
-    ema_fast = IntParameter(8, 15, default=8, space="buy")
-    ema_slow = IntParameter(20, 41, default=26, space="buy")
+    # Buy space (ema_fast and ema_slow removed — see buy_params docstring)
     rsi_period = IntParameter(10, 18, default=14, space="buy")
     rsi_buy_low = IntParameter(30, 50, default=38, space="buy")
     rsi_buy_high = IntParameter(50, 70, default=58, space="buy")
@@ -173,8 +172,6 @@ class NostalgiaForInfinity(IStrategy):
             from freqtrade.optimize.space import Integer, Real
 
             return [
-                Integer(8, 15, name="ema_fast"),
-                Integer(20, 41, name="ema_slow"),
                 Integer(10, 18, name="rsi_period"),
                 Integer(30, 50, name="rsi_buy_low"),
                 Integer(50, 70, name="rsi_buy_high"),
@@ -262,9 +259,11 @@ class NostalgiaForInfinity(IStrategy):
 
         # Pullback to slow EMA — low touches/crosses the slow EMA,
         # but the bar closes bullishly (close > open)
-        ema_s = f"ema_{self.ema_slow.value}"
+        # ema_slow locked to 26 (see buy_params docstring — would KeyError
+        # on every epoch if hyperopt-sampled because populate_indicators
+        # only runs once at hyperopt startup)
         dataframe["pullback"] = (
-            (dataframe["low"] <= dataframe[ema_s]) & (dataframe["close"] > dataframe["open"])
+            (dataframe["low"] <= dataframe["ema_26"]) & (dataframe["close"] > dataframe["open"])
         ).astype(int)
 
         # 1d macro trend filter — daily EMA200
@@ -347,8 +346,9 @@ class NostalgiaForInfinity(IStrategy):
     # ------------------------------------------------------------------
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         rsi = f"rsi_{self.rsi_period.value}"
-        ema_f = f"ema_{self.ema_fast.value}"
-        ema_s = f"ema_{self.ema_slow.value}"
+        # ema_fast/ema_slow locked to 8/26 (see buy_params docstring)
+        ema_f = "ema_8"
+        ema_s = "ema_26"
 
         # RSI overbought
         dataframe.loc[

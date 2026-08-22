@@ -24,14 +24,19 @@ CONFIG_FILE = ROOT / "user_data" / "config.binance_local.json"
 
 
 def run_hyperopt(
-    timerange: str, epochs: int, spaces: str, loss: str, random_state: int = 42
+    timerange: str,
+    epochs: int,
+    spaces: str,
+    loss: str,
+    random_state: int = 42,
+    strategy: str = "TrendRider4h",
 ) -> dict:
     """Run hyperopt via the internal API. Returns best-epoch dict."""
     from freqtrade.configuration import Configuration
     from freqtrade.optimize.hyperopt.hyperopt import Hyperopt
 
     config = Configuration.from_files([str(CONFIG_FILE)])
-    config["strategy"] = "TrendRider4h"
+    config["strategy"] = strategy
     config["user_data_dir"] = USER_DATA_DIR
     config["strategy_path"] = str(USER_DATA_DIR / "strategies")
     config["timerange"] = timerange
@@ -78,6 +83,7 @@ def record_hyperopt(
     loss: str,
     elapsed_s: float,
     run_status: str,
+    strategy: str = "TrendRider4h",
 ) -> None:
     """Append result to hyperopt-history.json."""
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
@@ -92,8 +98,8 @@ def record_hyperopt(
     history.setdefault("runs", []).append(
         {
             "run_at": timestamp,
-            "strategy_name": "TrendRider4h",
-            "strategy_file": "user_data/strategies/TrendRider4h.py",
+            "strategy_name": strategy,
+            "strategy_file": f"user_data/strategies/{strategy}.py",
             "timerange": timerange,
             "epochs_requested": epochs,
             "spaces": spaces,
@@ -122,6 +128,7 @@ def main():
     spaces = "buy"
     loss = "SharpeHyperOptLossDaily"
     random_state = 42
+    strategy = "TrendRider4h"
     for arg in sys.argv[1:]:
         if arg.startswith("--timerange="):
             timerange = arg.split("=", 1)[1]
@@ -133,7 +140,10 @@ def main():
             loss = arg.split("=", 1)[1]
         elif arg.startswith("--random-state="):
             random_state = int(arg.split("=", 1)[1])
+        elif arg.startswith("--strategy="):
+            strategy = arg.split("=", 1)[1]
 
+    print(f"  strategy: {strategy}")
     print(f"  timerange: {timerange}")
     print(f"  epochs: {epochs}")
     print(f"  spaces: {spaces}")
@@ -155,7 +165,7 @@ def main():
     status = "failed_error"
     best = {}
     try:
-        best = run_hyperopt(timerange, epochs, spaces, loss, random_state)
+        best = run_hyperopt(timerange, epochs, spaces, loss, random_state, strategy)
         status = "success"
     except SystemExit as e:
         status = "success" if (e.code is None or e.code == 0) else "failed_error"
@@ -168,7 +178,7 @@ def main():
     print()
 
     print("[4/4] recording result...")
-    record_hyperopt(best, timerange, epochs, spaces, loss, elapsed, status)
+    record_hyperopt(best, timerange, epochs, spaces, loss, elapsed, status, strategy)
     print(f"=== done. status={status} ===")
     return 0 if status == "success" else 1
 

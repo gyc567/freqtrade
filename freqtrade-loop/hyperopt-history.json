@@ -76,7 +76,7 @@
       "best_epoch": 55,
       "best_epoch_stats": {
         "trades": 20,
-        "win_rate": 0.60,
+        "win_rate": 0.6,
         "profit_total": 115.338,
         "drawdown": 25.377,
         "avg_duration": "1 day, 7:48:00",
@@ -91,6 +91,48 @@
         "tp_atr_mult": "3.0 -> 2.864 (slightly tighter TP)",
         "volume_factor": "1.0 -> 1.004 (no change)"
       }
+    },
+    {
+      "run_at": "2026-08-22T01:52:35.409472Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 5,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 3.0,
+      "status": "success",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T01:52:43.500412Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 4.7,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T01:54:29.520826Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 100,
+      "spaces": "buy",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 4.5,
+      "status": "success",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
     }
   ]
 }

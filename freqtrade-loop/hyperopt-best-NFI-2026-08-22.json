@@ -1,0 +1,37 @@
+{
+  "strategy_name": "NostalgiaForInfinity",
+  "params": {
+    "roi": {
+      "0": 0.04,
+      "48": 0.025,
+      "96": 0.015,
+      "168": 0.005
+    },
+    "stoploss": {
+      "stoploss": -0.08
+    },
+    "trailing": {
+      "trailing_stop": false,
+      "trailing_stop_positive": null,
+      "trailing_stop_positive_offset": 0.0,
+      "trailing_only_offset_is_reached": false
+    },
+    "max_open_trades": {
+      "max_open_trades": 3
+    },
+    "sell": {
+      "rsi_exit": 70
+    },
+    "buy": {
+      "adx_min": 26,
+      "atr_stop_mult": 2.299,
+      "min_confidence": 73.969,
+      "rsi_buy_high": 63,
+      "rsi_buy_low": 41,
+      "rsi_period": 10,
+      "volume_mult": 1.241
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2026-08-22 01:54:29.520273+00:00"
+}
