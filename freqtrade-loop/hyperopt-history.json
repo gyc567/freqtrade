@@ -189,6 +189,34 @@
       "best_params": {},
       "best_loss": null,
       "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:48:00.036960Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 500,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 0.8,
+      "status": "failed_error",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
+    },
+    {
+      "run_at": "2026-08-22T05:48:35.756627Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "timerange": "20230101-20260101",
+      "epochs_requested": 500,
+      "spaces": "buy,sell,roi,stoploss",
+      "loss_function": "SharpeHyperOptLossDaily",
+      "elapsed_seconds": 13.2,
+      "status": "success",
+      "best_params": {},
+      "best_loss": null,
+      "best_total_profit": null
     }
   ]
 }
