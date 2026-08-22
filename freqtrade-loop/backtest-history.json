@@ -3192,6 +3192,102 @@
         "sqn": 5.6835,
         "profit_factor": 0.0
       }
+    },
+    {
+      "run_at": "2026-08-22T06:23:18.767519Z",
+      "strategy_name": "NostalgiaForInfinity1h",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity1h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 7,
+        "win_rate": 1.0,
+        "profit_total": 42.50401187,
+        "max_drawdown": "0",
+        "profit_mean": 0.017884746786086425,
+        "duration_avg": "1 day, 8:00:00",
+        "sharpe": 0.2944033190493446,
+        "sqn": 5.6835,
+        "profit_factor": 0.0
+      }
+    },
+    {
+      "run_at": "2026-08-22T06:23:51.037415Z",
+      "strategy_name": "NostalgiaForInfinity1h",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity1h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 7,
+        "win_rate": 1.0,
+        "profit_total": 42.50401187,
+        "max_drawdown": "0",
+        "profit_mean": 0.017884746786086425,
+        "duration_avg": "1 day, 8:00:00",
+        "sharpe": 0.2944033190493446,
+        "sqn": 5.6835,
+        "profit_factor": 0.0
+      }
+    },
+    {
+      "run_at": "2026-08-22T06:24:13.531717Z",
+      "strategy_name": "NostalgiaForInfinity1h",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity1h.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 31,
+        "win_rate": 0.41935483870967744,
+        "profit_total": -29.89698064000001,
+        "max_drawdown": "32.334",
+        "profit_mean": -0.0029045243674016307,
+        "duration_avg": "7:35:00",
+        "sharpe": -0.12192227523281907,
+        "sqn": -1.2234,
+        "profit_factor": 0.5997001534899656
+      }
+    },
+    {
+      "run_at": "2026-08-22T06:31:06.152978Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "(uncommitted)",
+      "timeframe": "4h",
+      "timerange": "20230101-20240101",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 7,
+        "win_rate": 1.0,
+        "profit_total": 42.50401187,
+        "max_drawdown": "0",
+        "profit_mean": 0.017884746786086425,
+        "duration_avg": "1 day, 8:00:00",
+        "sharpe": 0.2944033190493446,
+        "sqn": 5.6835,
+        "profit_factor": 0.0
+      }
     }
   ]
 }

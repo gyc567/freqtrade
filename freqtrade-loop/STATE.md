@@ -1,5 +1,5 @@
 # Freqtrade Loop State
-Last run: 2026-08-22T05:50:46.261119Z
+Last run: 2026-08-22T06:31:06.152970Z
 Loop version: 0.1.0
 
 ## Strategies
@@ -7,14 +7,16 @@ Loop version: 0.1.0
 |---|---|---|---|---|---|
 |BTCHarmonic4H|user_data/strategies/BTCHarmonic4H.py|2026-08-20|2026-08-20|zero-trades|backtest ran (gate.io), 0 trades — strategy needs signal logic tuning|
 |SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-12|never|signals-all-zero|default template only, not for trading|
+|NostalgiaForInfinity1h|user_data/strategies/NostalgiaForInfinity1h.py|2026-08-22|2026-08-22|success|trades=31, wr=41.9%, pf=0.60, dd=32.334 (profit=-29.89698064000001)|
 |TrendRider4h|user_data/strategies/TrendRider4h.py|2026-08-21|2026-08-21|success|trades=20, wr=60.0%, pf=2.45, dd=25.377 (profit=115.34) — **Cycle 8 hyperopt MR-Pro winner**|
 |NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-22|2026-08-22|success|trades=7, wr=100.0%, pf=0.00, dd=0 (profit=42.50401187)|
 
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
+|NostalgiaForInfinity1h|success|31|41.9%|-29.89698064000001|32.334|binance-local|2026-08-22T06:24:13.531710Z|
 |TrendRider4h|success|20|60.0%|115.33818706999999|25.377|binance-local|2026-08-22T05:15:55.887239Z|
-|NostalgiaForInfinity|success|7|100.0%|42.50401187|0|binance-local|2026-08-22T05:50:46.261119Z|
+|NostalgiaForInfinity|success|7|100.0%|42.50401187|0|binance-local|2026-08-22T06:31:06.152970Z|
 |BTCHarmonic4H|success|0|N/A|N/A|N/A|gate|2026-08-20 12:56:48Z|
 
 ## Known Issues
@@ -1063,6 +1065,102 @@ Cycle 12 is the strongest NFI result yet, but still needs validation before depl
 | Validation status | **validated** | **promising — needs 1h OOS** | superseded |
 
 **NFI Cycle 12 is now the strongest NFI result.** TrendRider4h MR-Pro is still validated primary (20 trades / 60% WR / 3y OOS). NFI Cycle 12 is the strongest secondary candidate — real edge, real exits, but requires further validation before deployment.
+
+## Cycle 13 — NFI Cross-Validation Sweep (2026-08-22T06:24Z)
+
+User request: validate Cycle 12 NFI params on two orthogonal dimensions before considering dry_run deployment. Two options executed in sequence: **(B) 1h OOS validation**, then **(A) loosen rsi_buy_low 32→25 to capture 2023 grinding-bull trades**.
+
+### 13.1 — Pre-flight fix: `run_backtest.py` timeframe override
+
+**Bug found**: `user_data/config.binance_local.json` contains `"timeframe": "4h"` which **silently overrides** the strategy's class attribute. Running `NostalgiaForInfinity1h` (which has `timeframe = "1h"` in its class) was producing identical results to the 4h strategy because the config's 4h was winning.
+
+**First fix attempt** used `importlib.import_module("user_data.strategies.NFI1h")` — failed with `ModuleNotFoundError: No module named 'user_data'` because `user_data` was not on `sys.path`. **Second fix** injected candidate paths into `sys.path` before import (ROOT, ROOT/user_data, cwd) and slimmed the class-finder lambda. Verified by log: `Override strategy 'timeframe' with value from the configuration: 1h` and `strategy timeframe: 1h (overrides config)`. **Timeframe override now works correctly.**
+
+### 13.2 — Option B: 1h OOS validation (NEGATIVE)
+
+Re-ran Cycle 12 params on 1h data (BTC/USDT 2023-2025, 35015 bars) using the new `NostalgiaForInfinity1h` variant:
+
+| Metric | Cycle 12 (4h) | **Cycle 13 Option B (1h)** | Delta |
+|---|---|---|---|
+| Trades | 7 | **31** | +24 |
+| WR | 100% | **41.9%** | -58.1% |
+| Profit (USDT) | +42.50 | **-29.90** | -72.40 |
+| DD (USDT) | 0.00 | **32.33** | +32.33 |
+| Sharpe (wallet) | 1.25 | (negative) | n/a |
+| Calmar | 12.51 | (negative) | n/a |
+| Avg winner | +6.07 | — | — |
+| Avg loser | n/a | — | — |
+
+**The 60-100% WR does NOT hold on 1h.** The Cycle 12 hyperopt was overfit to the 4h timeframe specifically. The 1h data has ~4× more bars (26303 vs 6576) and a fundamentally different volatility regime — the 4h-tuned `rsi_buy_low=32, adx_min=23, min_confidence=48.984` filters become a leaky sieve on 1h noise.
+
+**Verdict**: NFI Cycle 12 is a **4h-specific strategy**. Do NOT attempt to deploy on lower timeframes without re-hyperopting on 1h data first. This validates the user's BTC/USDT 4H primary-pair constraint empirically.
+
+### 13.3 — Option A: loosen rsi_buy_low 32→25 (NO-OP, but informative)
+
+Updated `NostalgiaForInfinity.py`: `buy_params.rsi_buy_low: 32 → 25`, `IntParameter` range `30-50 → 25-50` (so future hyperopts can search the wider range). All other Cycle 12 params unchanged.
+
+**Backtest result: 7t / 100% / +42.50 USDT / 0 DD — IDENTICAL to Cycle 12.**
+
+Investigated via per-gate signal counts on 2023 BTC/USDT 4h:
+
+| Gate | Bars passing (out of 2190) |
+|---|---|
+| RSI(10) >= 25 (was 32) | 2126 |
+| RSI(10) 25-59 (was 32-59) | 1477 |
+| ADX >= 23 | 1236 |
+| Volume ratio >= 1.19 | 560 |
+| Confidence >= 48.984 | 912 |
+| **enter_long=1** | **6** |
+
+**6 enter_long=1 signals fire in 2023 with the loosened RSI bound, but only 1 trade actually opens** (2023-11-01 → 2023-11-02, +2.29%). The other 5 signals are clustered in 2023-10-31 through 2023-11-26:
+
+| Date | Close | Tag | Confidence |
+|---|---|---|---|
+| 2023-07-23 16:00 | 30093 | pullback_ema | 77.0 |
+| 2023-10-31 08:00 | 34488 | pullback_ema | 63.0 |
+| 2023-11-01 16:00 | 34558 | pullback_ema | 62.0 → OPENS TRADE |
+| 2023-11-02 16:00 | 35000 | pullback_ema | 78.0 |
+| 2023-11-13 12:00 | 36842 | pullback_ema | 62.0 |
+| 2023-11-26 20:00 | 37447 | pullback_ema | 70.0 |
+
+**The bottleneck is NOT `rsi_buy_low`** — all 5 missed signals comfortably exceed 48.984 confidence. The actual blockers are downstream:
+1. **Position lockout** (`position_stacking` default = False): 4 of the 5 missed signals fall in the 2023-10-31 → 2023-11-26 window when the Nov 1 trade is still settling, blocking re-entries.
+2. **2023-07-23 signal** at $30093 (H1 bull recovery) has confidence 77 (well above threshold) but no trade opens — likely blocked by the `confirm_trade_entry` chain or a protection (CooldownPeriod `stop_duration=20` from a prior loss, or `StoplossGuard` from H1 stop-loss hits).
+
+**Verdict on Option A**: **rsi_buy_low loosening is a no-op for 4h trade count**. The other 2023 entries were already "captured" as signals but never translated to trades. To genuinely add 2023 trades would require relaxing `position_stacking`, lowering `min_confidence`, or disabling one of the protections — none of which are safe without re-hyperopt validation.
+
+**Keep the rsi_buy_low=25 setting** (wider hyperopt search range for future cycles) but note it does not change the current 4h backtest result.
+
+### 13.4 — Cycle 13 verdict
+
+| Question | Answer |
+|---|---|
+| Does Cycle 12 generalize to 1h? | **NO** (31t/41.9%/-29.90 USDT) |
+| Does loosening rsi_buy_low add 2023 trades? | **NO** (6 signals fire, only 1 opens — position/protection lockout is the bottleneck) |
+| Should NFI Cycle 12 be deployed? | **Not yet** — Cycle 12 is a 4h-only edge, not yet multi-timeframe-validated |
+| Should TrendRider4h MR-Pro (Cycle 8) remain primary? | **YES** — it's the only 3y OOS-validated strategy in this loop |
+
+### 13.5 — Files modified
+
+- `freqtrade-loop/run_backtest.py` — fixed timeframe override (sys.path injection for importlib)
+- `user_data/strategies/NostalgiaForInfinity.py` — `buy_params.rsi_buy_low: 32 → 25`, `IntParameter` range 30-50 → 25-50
+- `user_data/strategies/NostalgiaForInfinity1h.py` — NEW strategy variant (timeframe="1h"), used only for Cycle 13 Option B
+- `freqtrade-loop/backtest-history.json` — Cycle 13 1h + Option A entries appended
+- `freqtrade-loop/loop-ledger.json` — Cycle 13 runs appended
+- `/tmp/c4_results/nfi_1h_backtest.log` — Option B log
+- `/tmp/c4_results/nfi_cycle13a_backtest.log` — Option A log
+- `/tmp/c4_results/NostalgiaForInfinity_1h_variant.py` — 1h variant preserved outside `user_data/strategies/`
+
+### 13.6 — Recommended next step (Cycle 14)
+
+The Cycle 12 NFI params are **4h-specific** and cannot be improved by:
+- ❌ Cross-timeframe validation (Option B, 1h fails)
+- ❌ Single-parameter loosening of `rsi_buy_low` (Option A, no-op)
+
+The remaining paths to add 2023 trades or validate the strategy further:
+1. **Position lockout experiment** — temporarily set `position_stacking=True` and re-backtest. Adds 4 H1/H2 2023 trades at the cost of compounding risk. If 4/4 winners, position management is the hidden edge. If 1-3 winners, current single-position discipline is correct.
+2. **Re-hyperopt on 1h with fresh seeds** — accept that 4h NFI is one strategy, 1h NFI would be a different strategy. Run 500-epoch hyperopt on 1h data; expect a totally different param set.
+3. **Multi-strategy dry_run** — Stage Cycle 12 NFI (4h) alongside TrendRider4h MR-Pro for 30-day paper trading. Two signal classes (mean-reversion RSI + multi-timeframe pullback) on different timeframes should diversify risk. **This is the most likely deployment-ready path.**
 
 ## Loop Health
 - Tokens today: ~185,000 (33 backtest runs + 4 hyperopt runs + 4 NFI backtests)

@@ -33,6 +33,19 @@ Highlights
 - Spot-safe (leverage 1x)
 - JSON override trap: ensure no <NostalgiaForInfinity>.json next to this file
 
+Cycle 12 changelog
+------------------
+- 500-epoch hyperopt refines Cycle 11's 100-epoch result. Best epoch 372/500:
+  7 trades / 100% WR / +42.50 USDT / SharpeDaily -1.425 (vs Cycle 11's -1.238).
+- Key parameter shifts:
+  * rsi_buy_low: 44 -> 32 (more permissive pullback)
+  * rsi_period: 12 -> 10 (faster RSI)
+  * rsi_buy_high: 57 -> 59
+  * min_confidence: 42.961 -> 48.984
+  * rsi_exit: 68 -> 65 (tighter exit)
+  * stoploss: -0.101 -> -0.064 (tighter catastrophic backstop)
+- minimal_roi re-tuned: 0/1438/2343/5823 min (0/24h/39h/97h).
+
 Cycle 11 changelog
 ------------------
 - FIXED minimal_roi keys: were minutes (48/96/168 = 0.8h/1.6h/2.8h), now hours
@@ -98,18 +111,18 @@ class NostalgiaForInfinity(IStrategy):
     # In practice, rsi_exit (rsi > 68) fires before ROI targets.
     # ------------------------------------------------------------------
     minimal_roi = {
-        "0": 0.3843126885195,
-        "1010": 0.1645704582052,
-        "1914": 0.0768419069652,
-        "5395": 0,
+        "0": 0.35786,
+        "1438": 0.25229,    # 23.97h (rounded from 1437.8839978025283)
+        "2343": 0.07684,    # 39.05h (rounded from 2342.709160066721)
+        "5823": 0,          # 97.05h (rounded from 5823.3785856780105)
     }
 
     # ------------------------------------------------------------------
     # Stoploss — ATR-based dynamic via custom_stoploss
-    # Cycle 11 hyperopt best: -0.101 (slightly wider than default -0.08
-    # because custom_stoploss overrides in most cases anyway)
+    # Cycle 12 hyperopt best: -0.064 (tighter than Cycle 11's -0.101)
+    # Higher confidence in entries means tighter catastrophic backstop.
     # ------------------------------------------------------------------
-    stoploss = -0.10143583426227921  # custom_stoploss overrides
+    stoploss = -0.06401  # custom_stoploss overrides
 
     # No trailing stop — NFI's structure relies on hard TP + dynamic SL
     trailing_stop = False
@@ -145,29 +158,27 @@ class NostalgiaForInfinity(IStrategy):
         ]
 
     # ------------------------------------------------------------------
-    # Buy params (Cycle 11 hyperopt best — full-space search, 200 epochs)
-    # ema_fast/ema_slow are FIXED (not hyperopt) because they're used in
-    # populate_indicators, which only runs once at hyperopt startup —
-    # sampling them would cause KeyError on every epoch.
-    # Note: min_confidence dropped 73.969 -> 42.961 (looser entries vs
-    # Cycle 10) because roi/sell/stoploss spaces now contribute to the
-    # profit-taking, so entries don't need to be as selective.
+    # Buy params (Cycle 13a: rsi_buy_low 32 -> 25 to capture grinding bull
+    # 2023 trades that the Cycle 12 4h-only validation missed. Cycle 12's
+    # 1h OOS test produced 31t/41.9%/-29.90 USDT (decisively negative) —
+    # this loosening is a 4h-only experiment. Hyperopt range widened to
+    # 25-50 to allow future search to use the new lower bound.
     # ------------------------------------------------------------------
     buy_params = {
-        "rsi_period": 12,
-        "rsi_buy_low": 44,
-        "rsi_buy_high": 57,
+        "rsi_period": 10,
+        "rsi_buy_low": 25,
+        "rsi_buy_high": 59,
         "adx_min": 23,
         "volume_mult": 1.19,
-        "min_confidence": 42.961,
+        "min_confidence": 48.984,
         "atr_stop_mult": 2.384,
     }
 
     # ------------------------------------------------------------------
-    # ROI/stoploss params (HyperOpt space)
+    # Sell params (HyperOpt space)
     # ------------------------------------------------------------------
     sell_params = {
-        "rsi_exit": 68,
+        "rsi_exit": 65,
     }
 
     # ------------------------------------------------------------------
@@ -175,7 +186,7 @@ class NostalgiaForInfinity(IStrategy):
     # ------------------------------------------------------------------
     # Buy space (ema_fast and ema_slow removed — see buy_params docstring)
     rsi_period = IntParameter(10, 18, default=14, space="buy")
-    rsi_buy_low = IntParameter(30, 50, default=38, space="buy")
+    rsi_buy_low = IntParameter(25, 50, default=38, space="buy")
     rsi_buy_high = IntParameter(50, 70, default=58, space="buy")
     adx_min = IntParameter(15, 30, default=20, space="buy")
     volume_mult = DecimalParameter(0.8, 2.0, default=1.0, space="buy")

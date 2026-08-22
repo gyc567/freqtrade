@@ -150,6 +150,33 @@ def run_backtest(timerange: str = "20230101-20240101", strategy: str = "TrendRid
     config["dry_run_wallet"] = 1000
     config["runmode"] = "backtest"
 
+    # Override timeframe from the strategy's class attribute (config's "timeframe"
+    # would otherwise win — see Cycle 13 finding). This lets variants like
+    # NostalgiaForInfinity1h use 1h data without editing the shared config.
+    try:
+        import importlib
+        import sys
+
+        # freqtrade sets cwd to user_data_dir via internal API; user_data is on path
+        for candidate in (ROOT, ROOT / "user_data", Path.cwd()):
+            p = str(candidate)
+            if p not in sys.path:
+                sys.path.insert(0, p)
+        mod = importlib.import_module(f"user_data.strategies.{strategy}")
+        cls = next(
+            (
+                v
+                for v in vars(mod).values()
+                if isinstance(v, type) and v.__module__ == mod.__name__ and hasattr(v, "timeframe")
+            ),
+            None,
+        )
+        if cls and hasattr(cls, "timeframe"):
+            config["timeframe"] = cls.timeframe
+            print(f"  strategy timeframe: {cls.timeframe} (overrides config)")
+    except Exception as e:
+        print(f"  WARN could not derive strategy timeframe: {type(e).__name__}: {e}")
+
     # Run backtest
     bt = Backtesting(config)
     bt.start()

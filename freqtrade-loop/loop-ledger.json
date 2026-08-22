@@ -950,9 +950,37 @@
       "strategy": "NostalgiaForInfinity",
       "tokens_spent": 0,
       "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T06:23:18.767519Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T06:23:51.037415Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T06:24:13.531717Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-22T06:31:06.152978Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity",
+      "tokens_spent": 0,
+      "status": "success"
     }
   ],
   "total_tokens_spent": 0,
-  "total_runs": 135,
+  "total_runs": 139,
   "last_reset": "2026-08-20T00:00:00Z"
 }
