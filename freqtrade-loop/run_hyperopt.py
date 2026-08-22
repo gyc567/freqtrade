@@ -32,6 +32,13 @@ def run_hyperopt(
     strategy: str = "TrendRider4h",
 ) -> dict:
     """Run hyperopt via the internal API. Returns best-epoch dict."""
+    # Patch ccxt BEFORE freqtrade's exchange initialization.
+    # (Binance is geo-blocked per STATE.md; without this, Backtesting() inside
+    # Hyperopt's constructor fails to load markets.)
+    from run_backtest import patch_load_markets
+
+    patch_load_markets()
+
     from freqtrade.configuration import Configuration
     from freqtrade.optimize.hyperopt.hyperopt import Hyperopt
 
@@ -56,22 +63,26 @@ def run_hyperopt(
     hp = Hyperopt(config)
     hp.start()
 
-    # Load best epoch from results file
-    import zipfile
-
-    zips = sorted(HYPEROPT_DIR.glob("strategy_*.fthypt.zip"), key=lambda p: p.stat().st_mtime)
+    # Load best epoch from results file. Format: .fthypt (JSONL, one epoch per line).
+    # Earlier code looked for "*.fthypt.zip" which matches nothing — that's why every
+    # WF cycle was reported as "hyperopt_failed" even though hyperopt itself succeeded.
+    fthypts = sorted(HYPEROPT_DIR.glob("strategy_*.fthypt"), key=lambda p: p.stat().st_mtime)
 
     best = {}
-    if zips:
-        latest = zips[-1]
-        with zipfile.ZipFile(latest) as z:
-            json_name = next((n for n in z.namelist() if n.endswith(".json")), None)
-            if json_name:
-                with z.open(json_name) as f:
-                    history = json.load(f)
-                epochs_list = history.get("epochs", []) if isinstance(history, dict) else history
-                if epochs_list:
-                    best = min(epochs_list, key=lambda e: e.get("loss", 1e9))
+    if fthypts:
+        latest = fthypts[-1]
+        epochs: list = []
+        with latest.open() as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    epochs.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+        if epochs:
+            best = min(epochs, key=lambda e: e.get("loss", 1e9))
     return best
 
 

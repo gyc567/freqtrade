@@ -137,6 +137,10 @@ def patch_load_markets():
 
 def run_backtest(timerange: str = "20230101-20240101", strategy: str = "TrendRider4h"):
     """Run freqtrade backtest via internal API."""
+    # Patch ccxt BEFORE Backtesting() constructs an Exchange (Binance is
+    # geo-blocked per STATE.md; without this, Backtesting fails to load markets).
+    patch_load_markets()
+
     from freqtrade.configuration import Configuration
     from freqtrade.optimize.backtesting import Backtesting
 

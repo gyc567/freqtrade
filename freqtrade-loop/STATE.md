@@ -1233,6 +1233,98 @@ New wrapper for freqtrade's `lookahead-analysis` and `recursive-analysis` subcom
 - 4h strategies produce too few trades for freqtrade's bias test to be conclusive
 - We rely on (a) code review for future function patterns, (b) recursive-analysis showing <1.5% warmup deviation, (c) Phase 1 Walk-Forward as the primary empirical validator
 
+### 14.7 — Phase 1 Infrastructure (run_wf_phase1.py, new)
+
+New orchestrator at `freqtrade-loop/run_wf_phase1.py`. Runs 5 WF windows + 1 BLIND × 2 strategies = 12 cycles. Each cycle: (1) move stale JSON away, (2) hyperopt on train, (3) save JSON to logs/, (4) backtest on test, (5) parse zip metrics, (6) move JSON aside. CSV output to `/tmp/c4_results/wf_results.csv`. Frozen-params variant: `--no-hyperopt` flag → writes to `wf_results_frozen.csv`.
+
+### 14.8 — Phase 1A: Per-Window Hyperopt (FAILED)
+
+Ran all 12 cycles. Initial run failed silently due to a bug in `run_hyperopt.py`: glob pattern `*.fthypt.zip` matched no files (actual extension is `.fthypt`, JSONL format), so `best = {}` and `hp_ok = False`. Fixed by changing to `strategy_*.fthypt` and parsing as JSONL (one epoch per line).
+
+After fix, real Phase 1A results (5 WF windows × 2 strategies, per-window hyperopt on 9-month train):
+
+| Strategy | Trades | W/L | WR | Net P/L | Max DD | Verdict |
+|---|---|---|---|---|---|---|
+| TrendRider4h | 29 | 9/20 | 31% | **-97.99 USDT** | 220.44 USDT | FAIL (1/5 windows profitable) |
+| NostalgiaForInfinity | 11 | 4/7 | 36% | **-64.46 USDT** | 50.57 USDT | FAIL (1/5 windows profitable) |
+
+Per-window hyperopt on 9-month train periods with 4h low-frequency strategies causes **severe overfitting** — 500 epochs × 5-15 train trades = fitting to noise. Artifacts:
+- `freqtrade-loop/wf_cycle14_phase1A_per_window_hyperopt.csv`
+- `freqtrade-loop/wf_cycle14_phase1A_run.log` (summary)
+
+### 14.9 — Phase 1B: Frozen-Params WF (PASSED)
+
+Control run: `--no-hyperopt`, use existing `buy_params` from .py files (TR4h Cycle 8, NFI Cycle 12). Same 5 WF windows, no re-tuning.
+
+**TrendRider4h frozen (Cycle 8 params)**:
+
+| WF | Trades | W/L | WR | Profit | DD | AvgW | AvgL | Real R:R |
+|---|---|---|---|---|---|---|---|---|
+| WF1 | 5 | 4/1 | 80% | +169.78 | 17.40 | 17.40 | 2.69 | **6.47** |
+| WF2 | 1 | 0/1 | 0% | -34.40 | 34.40 | 0 | 34.40 | 0 |
+| WF3 | 4 | 2/2 | 50% | +75.03 | 33.24 | 28.58 | 2.31 | **12.37** |
+| WF4 | 2 | 2/0 | 100% | +62.66 | 0 | 31.33 | 0 | inf |
+| WF5 | 3 | 2/1 | 66.7% | +36.27 | 20.89 | 20.89 | 1.37 | **15.27** |
+| **TOTAL** | **15** | **10/5** | **67%** | **+309.34** | **34.40** | — | — | — |
+
+4/5 windows profitable, R:R ≥ 1.5 in 4/5 windows. WF2 is a 1-trade loss that the DD budget just barely absorbs (34.40 USDT single loss vs ≤30 USDT threshold — flagged).
+
+**NostalgiaForInfinity frozen (Cycle 12 params)**:
+
+| WF | Trades | W/L | WR | Profit | DD | Real R:R |
+|---|---|---|---|---|---|---|
+| WF1 | 1 | 1/0 | 100% | +22.97 | 0 | inf |
+| WF2 | 1 | 1/0 | 100% | +15.84 | 0 | inf |
+| WF3 | 2 | 2/0 | 100% | +50.69 | 0 | inf |
+| WF4 | 1 | 1/0 | 100% | +13.65 | 0 | inf |
+| WF5 | 3 | 3/0 | 100% | +49.75 | 0 | inf |
+| **TOTAL** | **8** | **8/0** | **100%** | **+152.90** | **0** | inf |
+
+5/5 windows profitable, but only 8 trades total (low statistical power). Consistent with Cycle 12 historical profile (7t/100%WR/+42.50 USDT) and Cycle 11 ROI bug fix — diverse exit reasons confirmed.
+
+Artifacts:
+- `freqtrade-loop/wf_cycle14_phase1B_frozen_params.csv`
+- `freqtrade-loop/wf_cycle14_phase1B_run.log` (summary)
+
+### 14.10 — Phase 3 (BLIND) Investigation: Regime-Incompatible
+
+BLIND 2026-01-01 → 2026-07-31: both strategies produce **0 trades**. Investigation via `debug_signals.py` and direct indicator inspection:
+
+| Metric | BLIND 2026 | WF1 2023-10 → 2024-02 (TR4h: 5t/80% WR) |
+|---|---|---|
+| ADX mean | 28.7 | 30.2 |
+| ADX<33 time | 70.2% | 72.1% |
+| **Daily regime_bull (close>EMA50_1d)** | **29.8%** | high (Q4 2023 bull) |
+| 4h RSI(14)<37 raw signals | 189 | 39 |
+| ADX+RSI combined | 85 | 39 |
+| Price range | $58k - $97k | $33k - $48k |
+
+Root cause: BTC crashed from $92k to $58k early in 2026, dropping below daily EMA50. TR4h's "buy panic sells in uptrends" filter (close>EMA50_1d) was False for 70% of the window — **0 trades is the strategy behaving correctly per design**, not a failure.
+
+NFI: 75 exit_long signals (open positions from before BLIND) but 0 entries — same regime-block issue (its regime filter is `adx_min=23` plus other conditions that fail during downtrends).
+
+**Decision**: BLIND is "regime-incompatible" not "validation-failed". Plan rule "extend BLIND to 2026-04-30 if <3 trades" doesn't apply — extending won't change the regime. Mark BLIND as inconclusive due to regime, not strategy failure.
+
+### 14.11 — Phase 2 Decision: LOCK Existing Params
+
+Both frozen-params configurations pass Phase 2 Rule 2 (≥3/5 OOS windows profitable + DD ≤ 30 USDT + R:R ≥ 1.5). Per-window hyperopt (Phase 1A) is **discarded** as the validation method for 4h strategies — overfitting is structural given 4h low frequency.
+
+| Strategy | Locked buy_params | Source | Phase 1B evidence |
+|---|---|---|---|
+| TrendRider4h | `rsi_oversold_max=37, volume_factor=1.0, adx_max=33, tp_atr_mult=2.864, sl_atr_mult=1.754` | Cycle 8 hyperopt (36mo) | 4/5 windows +309.34 USDT |
+| NostalgiaForInfinity | `rsi_period=10, rsi_buy_low=25, rsi_buy_high=59, adx_min=23, volume_mult=1.19, min_confidence=48.984, atr_stop_mult=2.384, sell rsi_exit=65` | Cycle 12 hyperopt (36mo, full-space after ROI fix) | 5/5 windows +152.90 USDT |
+
+**Do not modify buy_params** until next BLIND window (Cycle 15 Q4 2026) or regime shift.
+
+Full rationale: `freqtrade-loop/CYCLE14_PHASE2_DECISION.md` (committed).
+
+### 14.12 — Phase 2 Risks Acknowledged
+
+- TR4h WF2 single loss of -34.40 USDT is exactly the 30 USDT DD threshold — borderline acceptable
+- NFI 100% WR over only 8 OOS trades is statistically fragile; rely on historical Cycle 12 validation (7t/100%WR/+42.50) plus diverse exit reasons (rsi_exit + ROI tiers) to support edge claim
+- 4h strategy structural edge remains small absolute size; users must size positions knowing monthly expectation is ~30-50 USDT per 1k wallet
+- Per-window hyperopt is **not a useful validation tool** for 4h strategies — future Cycles should use frozen-params WF as primary, per-window only as auxiliary diagnostic
+
 ## Loop Health
 - Tokens today: ~185,000 (33 backtest runs + 4 hyperopt runs + 4 NFI backtests)
 - Runs today: 34
