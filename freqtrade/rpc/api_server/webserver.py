@@ -235,12 +235,16 @@ class ApiServer(RPCHandler):
             tags=["Webserver"],
             dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
         )
-        app.include_router(
-            api_backtest,
-            prefix="/api/v1",
-            tags=["Backtest"],
-            dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
-        )
+        # BACKTEST ROUTER DISABLED — config uses Binance exchange which is GEO-blocked (451).
+        # Backtesting in web UI cannot work on this server. We use the CLI dry-run
+        # engine instead: bash freqtrade-loop/run_dryrun.py --strategy=NostalgiaForInfinity ...
+        # To re-enable: (1) switch to a non-GEO-blocked exchange, (2) uncomment below.
+        # app.include_router(
+        #     api_backtest,
+        #     prefix="/api/v1",
+        #     tags=["Backtest"],
+        #     dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
+        # )
         app.include_router(
             api_bg_tasks,
             prefix="/api/v1",
