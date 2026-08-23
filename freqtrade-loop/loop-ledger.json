@@ -978,9 +978,171 @@
       "strategy": "NostalgiaForInfinity",
       "tokens_spent": 0,
       "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:01Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20231007-20240207",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF1 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:02Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20231007-20240207",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF1 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:03Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20240307-20240707",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF2 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:04Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20240307-20240707",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF2 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:05Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20240807-20241207",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF3 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:06Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20240807-20241207",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF3 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:07Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20250107-20250507",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF4 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:08Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20250107-20250507",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF4 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:09Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20250607-20251007",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF5 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:10Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20250607-20251007",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on WF5 via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:11Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20250801-20260731",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on DRY12MO via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:12Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20250801-20260731",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on DRY12MO via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:13Z",
+      "action": "dryrun",
+      "strategy": "TrendRider4h",
+      "timerange": "20260501-20260731",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on DRY90D via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:35:14Z",
+      "action": "dryrun",
+      "strategy": "NostalgiaForInfinity",
+      "timerange": "20260501-20260731",
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "dry-run replay on DRY90D via run_dryrun.py (wraps Backtesting)"
+    },
+    {
+      "timestamp": "2026-08-23T08:50:00Z",
+      "action": "dryrun_compare",
+      "strategies": [
+        "TrendRider4h",
+        "NostalgiaForInfinity"
+      ],
+      "windows": [
+        "WF1",
+        "WF2",
+        "WF3",
+        "WF4",
+        "WF5",
+        "DRY12MO",
+        "DRY90D"
+      ],
+      "tokens_spent": 0,
+      "status": "success",
+      "phase": "Cycle 14 Phase 4",
+      "note": "Full comparison report via run_dryrun_compare.py; all 5 WF PASS (0% dev), DRY12MO/DRY90D no_baseline",
+      "report_path": "/tmp/c4_results/dryrun/reports/comparison_report.md"
     }
   ],
   "total_tokens_spent": 0,
-  "total_runs": 139,
+  "total_runs": 154,
   "last_reset": "2026-08-20T00:00:00Z"
 }

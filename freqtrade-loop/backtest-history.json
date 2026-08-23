@@ -3288,6 +3288,258 @@
         "sqn": 5.6835,
         "profit_factor": 0.0
       }
+    },
+    {
+      "run_at": "2026-08-23T08:35:01Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20231007-20240207",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:02Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20231007-20240207",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:03Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20240307-20240707",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:04Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20240307-20240707",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:05Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20240807-20241207",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:06Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20240807-20241207",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:07Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250107-20250507",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:08Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250107-20250507",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:09Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250607-20251007",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:10Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250607-20251007",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:11Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250801-20260731",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:12Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20250801-20260731",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:13Z",
+      "strategy_name": "TrendRider4h",
+      "strategy_file": "user_data/strategies/TrendRider4h.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20260501-20260731",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
+    },
+    {
+      "run_at": "2026-08-23T08:35:14Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "932eea665",
+      "timeframe": "4h",
+      "timerange": "20260501-20260731",
+      "data_source": "binance-local",
+      "data_path": "/Users/jie/code/fq-data-downloader/data/binance",
+      "config_used": "/Users/jie/code/freqtrade/user_data/config.binance_local.json",
+      "status": "success",
+      "backtest_exit_code": 0,
+      "phase": "Cycle 14 Phase 4 (dry-run replay)",
+      "backtest_result": {
+        "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
+        "kind": "dryrun_replay"
+      }
     }
   ]
 }
