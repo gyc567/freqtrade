@@ -180,6 +180,7 @@ class NostalgiaForInfinity1h(IStrategy):
     # ------------------------------------------------------------------
     # Sell params (HyperOpt space)
     # ------------------------------------------------------------------
+    # Cycle 15 Phase B variant 2 REVERTED (was -53% P/L regression)
     sell_params = {
         "rsi_exit": 65,
     }

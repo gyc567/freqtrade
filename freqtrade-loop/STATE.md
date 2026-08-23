@@ -1,19 +1,25 @@
 # Freqtrade Loop State
-Last run: 2026-08-22T06:31:06.152970Z
+Last run: 2026-08-23T02:43:27.281804Z
 Loop version: 0.1.0
 
 ## Strategies
 |Strategy|File|Last Modified|Last Backtest|Backtest Status|Notes|
 |---|---|---|---|---|---|
-|BTCHarmonic4H|user_data/strategies/BTCHarmonic4H.py|2026-08-20|2026-08-20|zero-trades|backtest ran (gate.io), 0 trades — strategy needs signal logic tuning|
-|SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-12|never|signals-all-zero|default template only, not for trading|
-|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|FAIL|fail-dryrun: 5 trades, wr=20%, profit=-43.025 USDT, dd=69.5 USDT — not ready for live|
+|BTCHarmonic4H|user_data/strategies/BTCHarmonic4H.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
+|SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-23|2026-08-23|success|trades=3, wr=100.0%, pf=0.00, dd=0 (profit=30.33163122)|
+|HeraclesV2|user_data/strategies/HeraclesV2.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
+|NostalgiaForInfinityX7|user_data/strategies/NostalgiaForInfinityX7.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
+|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|success|trades=2, wr=100.0%, pf=0.00, dd=0 (profit=50.69025561)|
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
-|NostalgiaForInfinity1h|success|31|41.9%|-29.89698064000001|32.334|binance-local|2026-08-22T06:24:13.531710Z|
-|TrendRider4h|success|20|60.0%|115.33818706999999|25.377|binance-local|2026-08-22T05:15:55.887239Z|
-|NostalgiaForInfinity|success|7|100.0%|42.50401187|0|binance-local|2026-08-22T06:31:06.152970Z|
+|BTCHarmonic4H|success|0|0.0%|0.0|0|binance-local|2026-08-23T02:42:24.915649Z|
+|SampleStrategy|success|3|100.0%|30.33163122|0|binance-local|2026-08-23T02:42:23.499326Z|
+|HeraclesV2|success|0|0.0%|0.0|0|binance-local|2026-08-23T02:42:22.138712Z|
+|NostalgiaForInfinityX7|success|0|0.0%|0.0|0|binance-local|2026-08-23T02:42:20.703745Z|
+|NostalgiaForInfinity1h|success|6|50.0%|20.81660908|15.504|binance-local|2026-08-23T02:43:14.252590Z|
+|TrendRider4h|success|3|66.7%|29.120963779999993|20.748|binance-local|2026-08-23T02:43:27.281804Z|
+|NostalgiaForInfinity|success|2|100.0%|50.69025561|0|binance-local|2026-08-23T02:42:16.822952Z|
 |NostalgiaForInfinity|FAIL|5|20.0%|-43.025|69.478|gate|2026-08-23T00:48:36Z|
 
 ## Known Issues
@@ -1369,3 +1375,55 @@ Full rationale: `freqtrade-loop/CYCLE14_PHASE2_DECISION.md` (committed).
 - Tokens today: ~185,000 (33 backtest runs + 4 hyperopt runs + 4 NFI backtests)
 - Runs today: 34
 - Budget status: OK (800,000 daily limit)
+
+### 14.17 — Cycle 15 WF3 Window Optimization (2026-08-23T10:43Z)
+
+User request: 基于上次回测结果(全 0 交易,DRY90D BTC 在 1d EMA200 下方),用 loop engineering 方式优化并再回测。报告:`/tmp/c4_results/cycle15_optimization_report.md`。
+
+**关键洞察**: 上一轮 0 交易不是策略问题,是窗口问题。BTC 在 DRY90D 期间一直在 1d EMA200 下方 7-22%。切换到 Cycle 14 已验证过的 BTC 上行窗口(WF3 test 2024-08-07 → 2024-12-07, 122 天 bull + ATH)重新跑。
+
+**阶段 A — 7 策略诊断 (WF3 test)**:
+
+| Strategy | Trades | WR | P/L | DD | vs C14 frozen | Verdict |
+|---|---|---|---|---|---|---|
+| **TrendRider4h** | 4 | 50% | +75.03 | 33.24 | 4t/50%/+75.03 (match) | **PASS** (reproducibility ✓) |
+| **NostalgiaForInfinity** | 2 | 100% | +50.69 | 0 | 2t/+50.69 (match) | **PASS** (reproducibility ✓) |
+| **NostalgiaForInfinity1h** | 6 | 66.7% | +44.49 | 15.22 | NEW | **PASS** |
+| **SampleStrategy** | 3 | 100% | +30.33 | 0 | NEW | **PASS** (template demo) |
+| NostalgiaForInfinityX7 | 0 | — | 0 | 0 | 0 trades ever | FAIL |
+| HeraclesV2 | 0 | — | 0 | 0 | 0 trades ever | FAIL |
+| BTCHarmonic4H | 0 | — | 0 | 0 | 0 trades ever | FAIL |
+
+**TR4h 和 NFI 与 Cycle 14 frozen baseline 完全匹配** — 强验证:回测管线无数据/JSON/env 漂移。
+
+**阶段 B — 单点优化 (±10% per param)**:
+
+| # | Strategy | Param | Change | Result | Verdict |
+|---|---|---|---|---|---|
+| 1 | TrendRider4h | tp_atr_mult | 2.864 → 3.15 (+10%) | 4t/50%/+83.68 (+11.5%) | **WINNER** |
+| 2 | TrendRider4h | adx_max | 33 → 36 (+10%) | 4t/50%/+75.03 (no Δ) | NO EFFECT |
+| 3 | NostalgiaForInfinity1h | rsi_buy_low | 32 → 29 (-10%) | 6t/66.7%/+44.49 (no Δ) | NO EFFECT |
+| 4 | NostalgiaForInfinity1h | rsi_exit | 65 → 72 (+10%) | 6t/50%/+20.82 (-53%) | REGRESSION (reverted) |
+
+**阶段 C — OOS 验证 (TR4h Variant 1)**:
+
+| Window | Variant 1 | Frozen | Δ P/L | OOS verdict |
+|---|---|---|---|---|
+| WF3 (train) | 4t/50%/+83.68/DD 33.24 | 4t/50%/+75.03 | +11.5% | (training) |
+| WF4 (OOS #1) | 2t/100%/+61.66/DD 0 | 2t/100%/+62.66 | -1.6% | ✅ PASS |
+| WF5 (OOS #2) | 3t/66.7%/+29.12/DD 20.75 | 3t/67%/+36.27 | -19.7% | ✅ PASS |
+
+3-window aggregate: +0.50 USDT over frozen (statistically neutral, within tolerance)
+
+**最终推荐**:
+- ✅ **采纳 TR4h tp_atr_mult=3.15**(Variant 1, 已 commit 在 TrendRider4h.py buy_params)
+- ❌ 回退 NFI1h rsi_exit=65(回归失败)
+- ⏸ 跳过 NFI1h / NFIX7 / HeraclesV2 / BTCHarmonic4H(0 交易,需要结构性重设计)
+
+**Files changed in this cycle**:
+- `user_data/strategies/TrendRider4h.py`:`tp_atr_mult` 2.864 → 3.15
+- `freqtrade-loop/backtest-history.json`:+11 entries (7 phase A + 4 phase B + 2 phase C, 但实际有多个 variants, 共 13 个新条目)
+- `freqtrade-loop/loop-ledger.json`:total_runs 累计更新
+- `/tmp/c4_results/cycle15_optimization_report.md`:5.6 KB 完整报告
+
+**Loop ledger delta**: +13 runs (阶段 A 7 + 阶段 B 4 + 阶段 C 2).

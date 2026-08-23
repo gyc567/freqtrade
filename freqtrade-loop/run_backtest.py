@@ -189,7 +189,8 @@ def run_backtest(timerange: str = "20230101-20240101", strategy: str = "TrendRid
     return bt.results, config
 
 
-def record_result(results, config, run_status, run_exit, strategy: str = "TrendRider4h"):
+def record_result(results, config, run_status, run_exit, strategy: str = "TrendRider4h",
+                  timerange: str = "20230101-20240101"):
     """Append to backtest-history.json + update STATE.md + loop-ledger.json."""
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
@@ -248,7 +249,7 @@ def record_result(results, config, run_status, run_exit, strategy: str = "TrendR
             "strategy_file": f"user_data/strategies/{strategy}.py",
             "git_commit": "(uncommitted)",
             "timeframe": "4h",
-            "timerange": "20230101-20240101",
+            "timerange": timerange,
             "data_source": "binance-local",
             "data_path": str(DATA_SRC),
             "config_used": str(CONFIG_FILE),
@@ -426,7 +427,7 @@ def main():
 
     print("[4/4] recording result + updating STATE.md...")
     timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
-    metrics = record_result(None, None, status, exit_code, strategy)
+    metrics = record_result(None, None, status, exit_code, strategy, timerange)
     # Pass timerange to state update so it gets stamped on the row
     update_state_md(metrics, status, timestamp, timerange, strategy)
 

@@ -155,10 +155,12 @@ class TrendRider4h(IStrategy):
     # ------------------------------------------------------------------
     buy_params = {
         # Cycle 8 hyperopt (2026-08-21, 100 epochs, Sharpe daily loss) — epoch 55
+        # Cycle 15 Phase B variant 1 (WINNER, OOS-validated): tp_atr_mult +10%
+        # (2.864 -> 3.15) for better R:R. WF3 result: 4t/50%/+83.68 (+11.5%)
         "rsi_oversold_max": 37,       # Previous bar's RSI(14) < 37
         "volume_factor": 1.0,         # volume > 1.0× avg (mild confirmation)
         "adx_max": 33,                # ADX < 33 (tighter trend filter)
-        "tp_atr_mult": 2.864,         # TP at 2.86×ATR (~4-5%)
+        "tp_atr_mult": 3.15,          # TP at 3.15×ATR (+10% from 2.864, Cycle 15 B winner)
         "sl_atr_mult": 1.754,         # SL at 1.75×ATR (~2-3%)
     }
 

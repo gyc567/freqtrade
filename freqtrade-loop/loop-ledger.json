@@ -1308,9 +1308,107 @@
       "strategy": "NostalgiaForInfinityX7",
       "tokens_spent": 0,
       "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:05.406565Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:15.372172Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:16.822958Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:18.458410Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:20.703755Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:22.138716Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:23.499333Z",
+      "action": "backtest",
+      "strategy": "SampleStrategy",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:24.915655Z",
+      "action": "backtest",
+      "strategy": "BTCHarmonic4H",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:44.901797Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:42:54.442701Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:43:03.821085Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:43:14.252596Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:43:25.762758Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:43:27.281810Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
     }
   ],
   "total_tokens_spent": 0,
-  "total_runs": 178,
+  "total_runs": 192,
   "last_reset": "2026-08-20T00:00:00Z"
 }
