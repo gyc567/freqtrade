@@ -235,12 +235,15 @@ class ApiServer(RPCHandler):
             tags=["Webserver"],
             dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
         )
-        app.include_router(
-            api_backtest,
-            prefix="/api/v1",
-            tags=["Backtest"],
-            dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
-        )
+        # BACKTEST ROUTER DISABLED — backtest triggers Binance GEO-block crash (451).
+        # We use CLI dry-run engine (run_dryrun.py) instead of web UI backtest.
+        # To re-enable: uncomment below and ensure config uses Gate.io or local data.
+        # app.include_router(
+        #     api_backtest,
+        #     prefix="/api/v1",
+        #     tags=["Backtest"],
+        #     dependencies=[Depends(http_basic_or_jwt_token), Depends(is_webserver_mode)],
+        # )
         app.include_router(
             api_bg_tasks,
             prefix="/api/v1",
