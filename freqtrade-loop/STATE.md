@@ -9,7 +9,7 @@ Loop version: 0.1.0
 |SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-23|2026-08-23|success|trades=3, wr=100.0%, pf=0.00, dd=0 (profit=30.33163122)|
 |HeraclesV2|user_data/strategies/HeraclesV2.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
 |NostalgiaForInfinityX7|user_data/strategies/NostalgiaForInfinityX7.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
-|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|success|trades=2, wr=100.0%, pf=0.00, dd=0 (profit=50.69025561)|
+|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|marginal|2 trades, wr=50%, profit=-8.04 USDT, dd=23.78 USDT — DRY-RUN (2024-02-14→2024-05-14, 90d window)|
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
@@ -20,7 +20,7 @@ Loop version: 0.1.0
 |NostalgiaForInfinity1h|success|6|50.0%|20.81660908|15.504|binance-local|2026-08-23T02:43:14.252590Z|
 |TrendRider4h|success|3|66.7%|29.120963779999993|20.748|binance-local|2026-08-23T02:43:27.281804Z|
 |NostalgiaForInfinity|success|2|100.0%|50.69025561|0|binance-local|2026-08-23T02:42:16.822952Z|
-|NostalgiaForInfinity|FAIL|5|20.0%|-43.025|69.478|gate|2026-08-23T00:48:36Z|
+|NostalgiaForInfinity|marginal|2|50.0%|-8.035|23.784|binance-local|2026-08-23T13:41:34Z|
 
 ## Known Issues
 - **Binance API is GEO-blocked (451)** — backtest uses Gate.io data via `config.gate.json`

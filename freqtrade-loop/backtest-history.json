@@ -3917,6 +3917,32 @@
         "profit_factor": 2.403576330046991
       },
       "phase": "Cycle 15 Phase C (OOS validation)"
+    },
+    {
+      "run_at": "2026-08-23T13:41:50.208818Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "2d288e133",
+      "timeframe": "4h",
+      "timerange": "20240214-20240514",
+      "data_source": "binance-local",
+      "status": "marginal",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 2,
+        "win_rate": 0.5,
+        "profit_total": -8.035,
+        "max_drawdown": 23.784,
+        "profit_mean": -4.017,
+        "avg_duration": "20:00:00",
+        "sharpe": -0.47,
+        "sqn": -0.5,
+        "exit_reasons": {
+          "rsi_exit": 1,
+          "trailing_stop_loss": 1
+        }
+      },
+      "config_used": "/root/code/freqtrade/user_data/config.binance_local.json"
     }
   ]
 }
