@@ -7,17 +7,14 @@ Loop version: 0.1.0
 |---|---|---|---|---|---|
 |BTCHarmonic4H|user_data/strategies/BTCHarmonic4H.py|2026-08-20|2026-08-20|zero-trades|backtest ran (gate.io), 0 trades — strategy needs signal logic tuning|
 |SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-12|never|signals-all-zero|default template only, not for trading|
-|NostalgiaForInfinity1h|user_data/strategies/NostalgiaForInfinity1h.py|2026-08-22|2026-08-22|success|trades=31, wr=41.9%, pf=0.60, dd=32.334 (profit=-29.89698064000001)|
-|TrendRider4h|user_data/strategies/TrendRider4h.py|2026-08-21|2026-08-21|success|trades=20, wr=60.0%, pf=2.45, dd=25.377 (profit=115.34) — **Cycle 8 hyperopt MR-Pro winner**|
-|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-22|2026-08-22|success|trades=7, wr=100.0%, pf=0.00, dd=0 (profit=42.50401187)|
-
+|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|FAIL|fail-dryrun: 5 trades, wr=20%, profit=-43.025 USDT, dd=69.5 USDT — not ready for live|
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
 |NostalgiaForInfinity1h|success|31|41.9%|-29.89698064000001|32.334|binance-local|2026-08-22T06:24:13.531710Z|
 |TrendRider4h|success|20|60.0%|115.33818706999999|25.377|binance-local|2026-08-22T05:15:55.887239Z|
 |NostalgiaForInfinity|success|7|100.0%|42.50401187|0|binance-local|2026-08-22T06:31:06.152970Z|
-|BTCHarmonic4H|success|0|N/A|N/A|N/A|gate|2026-08-20 12:56:48Z|
+|NostalgiaForInfinity|FAIL|5|20.0%|-43.025|69.478|gate|2026-08-23T00:48:36Z|
 
 ## Known Issues
 - **Binance API is GEO-blocked (451)** — backtest uses Gate.io data via `config.gate.json`

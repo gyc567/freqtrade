@@ -3540,6 +3540,33 @@
         "note": "see /tmp/c4_results/dryrun/reports/comparison_report.md",
         "kind": "dryrun_replay"
       }
+    },
+    {
+      "run_at": "2026-08-23T00:49:02.605443Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "aa5e5b861",
+      "timeframe": "4h",
+      "timerange": "20230101-20230731",
+      "data_source": "gate",
+      "status": "failed",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 5,
+        "win_rate": 0.2,
+        "profit_total": -43.025,
+        "max_drawdown": 69.478,
+        "profit_mean": -8.605,
+        "avg_duration": "1d 11:12:00",
+        "sharpe": -0.2,
+        "sqn": -0.69,
+        "exit_reasons": {
+          "rsi_exit": 1,
+          "ema_cross": 2,
+          "trailing_stop_loss": 2
+        }
+      },
+      "config_used": "/root/code/freqtrade/user_data/config.binance_local.json"
     }
   ]
 }

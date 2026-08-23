@@ -16,9 +16,9 @@ from typing import Any
 
 
 # --- Path constants ---
-ROOT = Path("/Users/jie/code/freqtrade")
+ROOT = Path(__file__).resolve().parents[1]
 LOOP_DIR = ROOT / "freqtrade-loop"
-DATA_SRC = Path("/Users/jie/code/fq-data-downloader/data/binance")
+DATA_SRC = ROOT / "user_data" / "data" / "binance"
 DATA_DST = ROOT / "user_data" / "data" / "binance"
 RESULTS_DIR = ROOT / "user_data" / "backtest_results"
 CONFIG_FILE = ROOT / "user_data" / "config.binance_local.json"
