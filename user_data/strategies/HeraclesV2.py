@@ -72,7 +72,7 @@ class HeraclesV2(IStrategy):
     trailing_only_offset_is_reached: bool = False
 
     # ── Protections ─────────────────────────────────────────────────────
-    stop_duration_candles: int = 6   # 6 × 4h = 24 h cooldown
+    stop_duration_candles: int = 6  # 6 × 4h = 24 h cooldown
 
     # ── Loop 10 hyperopt params (2026-08-22) ────────────────────────────
     buy_div_min = DecimalParameter(0.0, 0.5, default=0.14, decimals=2, space="buy")
@@ -89,13 +89,16 @@ class HeraclesV2(IStrategy):
 
     # ── ATR Percentile market filter (Loop 10) ───────────────────────
     ATR_PCT_WINDOW: int = 720
-    ATR_PCT_LOW: float = 0.25   # no-entry threshold
-    ATR_PCT_MR: float = 0.30    # MR zone threshold
+    ATR_PCT_LOW: float = 0.25  # no-entry threshold
+    ATR_PCT_MR: float = 0.30  # MR zone threshold
 
     # ── Mean Reversion (MR) mode params (Loop 10) ─────────────────────
+    # MR_RSI_ENTRY relaxed 55 -> 60 and ratio threshold 0.08 -> 0.12 to
+    # produce more signals on 4h BTC (Cycle 15, 2026-08-23).
     MR_MAX_HOLD: int = 48
     MR_RSI_EXIT: int = 62
-    MR_RSI_ENTRY: int = 55
+    MR_RSI_ENTRY: int = 60
+    MR_RATIO_MAX: float = 0.12
     MR_STOPLOSS: float = -0.03
     MR_TP_PCT: float = 0.015
 
@@ -109,9 +112,7 @@ class HeraclesV2(IStrategy):
             fillna=False,
         )
 
-    def populate_indicators(
-        self, dataframe: DataFrame, metadata: dict
-    ) -> DataFrame:
+    def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe = dropna(dataframe)
 
         # ── 4h Keltner Channel Width Band ─────────────────────────────
@@ -156,16 +157,17 @@ class HeraclesV2(IStrategy):
             .apply(lambda x: (x < x.iloc[-1]).sum() / len(x), raw=False)
         )
 
-        # ── MR entry signal (Loop 10) ──────────────────────────────────
-        # ratio < 0.08 & rsi < MR_RSI_ENTRY
+        # ── MR entry signal (Loop 10 → Cycle 15) ───────────────────────
+        # ratio < MR_RATIO_MAX & rsi < MR_RSI_ENTRY
+        # Cycle 15: 0.08 -> 0.12, 55 -> 60 to fire more on 4h BTC.
         ratio = dataframe["volatility_dcp"] / dataframe["volatility_kcw"].replace(0, float("nan"))
-        dataframe["mr_entry_sig"] = (ratio < 0.08) & (dataframe["rsi_14"] < self.MR_RSI_ENTRY)
+        dataframe["mr_entry_sig"] = (ratio < self.MR_RATIO_MAX) & (
+            dataframe["rsi_14"] < self.MR_RSI_ENTRY
+        )
 
         return dataframe
 
-    def info_to_1d_indicators(
-        self, metadata: dict, dataframe: DataFrame
-    ) -> DataFrame:
+    def info_to_1d_indicators(self, metadata: dict, dataframe: DataFrame) -> DataFrame:
         """Populate 1d informative candles with EMA200 for trend filtering."""
         dataframe = dropna(dataframe)
         dataframe["ema_200_1d"] = ta.trend.ema_indicator(
@@ -178,8 +180,8 @@ class HeraclesV2(IStrategy):
     def custom_stoploss(
         self,
         pair: str,
-        trade: 'Trade',
-        current_time: 'datetime',
+        trade: "Trade",
+        current_time: "datetime",
         current_rate: float,
         current_profit: float,
         start_mode: bool,
@@ -207,8 +209,8 @@ class HeraclesV2(IStrategy):
     def custom_exit(
         self,
         pair: str,
-        trade: 'Trade',
-        current_time: 'datetime',
+        trade: "Trade",
+        current_time: "datetime",
         current_rate: float,
         current_profit: float,
         **kwargs,
@@ -253,9 +255,7 @@ class HeraclesV2(IStrategy):
         except Exception:
             return True  # fail open on any error
 
-    def populate_entry_trend(
-        self, dataframe: DataFrame, metadata: dict
-    ) -> DataFrame:
+    def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         """
         Buy signal: ratio of DCP/KCW falls within [div_min, div_max]
         after applying the two shift offsets.
@@ -268,15 +268,12 @@ class HeraclesV2(IStrategy):
         ind = dataframe["volatility_dcp"]
         crs = dataframe["volatility_kcw"]
 
-        ratio = (
-            ind.shift(self.buy_indicator_shift.value)
-            .div(crs.shift(self.buy_crossed_indicator_shift.value))
+        ratio = ind.shift(self.buy_indicator_shift.value).div(
+            crs.shift(self.buy_crossed_indicator_shift.value)
         )
 
         # Primary momentum entry
-        conditions.append(
-            ratio.between(self.buy_div_min.value, self.buy_div_max.value)
-        )
+        conditions.append(ratio.between(self.buy_div_min.value, self.buy_div_max.value))
 
         # ATR percentile market filter — block entry in low-volatility environment
         conditions.append(dataframe["atr_pct"] >= self.ATR_PCT_LOW)
@@ -289,9 +286,7 @@ class HeraclesV2(IStrategy):
 
         return dataframe
 
-    def populate_exit_trend(
-        self, dataframe: DataFrame, metadata: dict
-    ) -> DataFrame:
+    def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         """
         Exit signals (Loop 10 — Dual-Mode):
 

@@ -1140,9 +1140,177 @@
       "phase": "Cycle 14 Phase 4",
       "note": "Full comparison report via run_dryrun_compare.py; all 5 WF PASS (0% dev), DRY12MO/DRY90D no_baseline",
       "report_path": "/tmp/c4_results/dryrun/reports/comparison_report.md"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:19.345977Z",
+      "action": "backtest",
+      "strategy": "BTCHarmonic4H",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:20.504192Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:21.644288Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinity1h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:22.698044Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:23.806559Z",
+      "action": "backtest",
+      "strategy": "TrendRider4h",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:24.831467Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:30:25.885150Z",
+      "action": "backtest",
+      "strategy": "SampleStrategy",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:32:56.597213Z",
+      "action": "backtest",
+      "strategy": "SampleStrategy",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:32:57.807466Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:32:59.282684Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:33:21.709322Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:33:23.273570Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:34:08.020201Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T01:34:18.610733Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:34:24.427477Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:34:25.739591Z",
+      "action": "backtest",
+      "strategy": "SampleStrategy",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:40:30.755987Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:40:32.032338Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T01:40:33.273218Z",
+      "action": "backtest",
+      "strategy": "HeraclesV2",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:16:38.300116Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T02:18:53.222138Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "failed_error"
+    },
+    {
+      "timestamp": "2026-08-23T02:23:11.315952Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:23:23.419703Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "success"
+    },
+    {
+      "timestamp": "2026-08-23T02:23:32.663163Z",
+      "action": "backtest",
+      "strategy": "NostalgiaForInfinityX7",
+      "tokens_spent": 0,
+      "status": "success"
     }
   ],
   "total_tokens_spent": 0,
-  "total_runs": 154,
+  "total_runs": 178,
   "last_reset": "2026-08-20T00:00:00Z"
 }
