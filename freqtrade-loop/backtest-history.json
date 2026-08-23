@@ -3943,6 +3943,29 @@
         }
       },
       "config_used": "/root/code/freqtrade/user_data/config.binance_local.json"
+    },
+    {
+      "run_at": "2026-08-23T13:58:52.650659Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "50b4f1922",
+      "timeframe": "4h",
+      "timerange": "20231116-20240514",
+      "data_source": "binance-local",
+      "status": "marginal",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 2,
+        "win_rate": 0.5,
+        "profit_total": -8.035,
+        "max_drawdown": 23.784,
+        "profit_mean": -4.017,
+        "avg_duration": "1d 12:00:00",
+        "sharpe": -0.04,
+        "sqn": -0.3,
+        "note": "180-day window same as 90-day \u2014 signals only in Feb-Apr 2024"
+      },
+      "config_used": "/root/code/freqtrade/user_data/config.binance_local.json"
     }
   ]
 }

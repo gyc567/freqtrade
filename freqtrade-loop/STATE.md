@@ -9,7 +9,7 @@ Loop version: 0.1.0
 |SampleStrategy|user_data/strategies/SampleStrategy.py|2026-08-23|2026-08-23|success|trades=3, wr=100.0%, pf=0.00, dd=0 (profit=30.33163122)|
 |HeraclesV2|user_data/strategies/HeraclesV2.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
 |NostalgiaForInfinityX7|user_data/strategies/NostalgiaForInfinityX7.py|2026-08-23|2026-08-23|success|trades=0, wr=0.0%, pf=0.00, dd=0 (profit=0.0)|
-|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|marginal|2 trades, wr=50%, profit=-8.04 USDT, dd=23.78 USDT — DRY-RUN (2024-02-14→2024-05-14, 90d window)|
+|NostalgiaForInfinity|user_data/strategies/NostalgiaForInfinity.py|2026-08-23|2026-08-23|marginal|2 trades, wr=50%, profit=-8.04 USDT, dd=23.78 — extended 180d window (2023-11→2024-05) same as 90d — signal sparse|
 ## Recent Backtests
 |Strategy|Status|Trades|Win Rate|Profit|Drawdown|Data Source|Commit|
 |---|---|---|---|---|---|---|---|
