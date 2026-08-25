@@ -3966,6 +3966,25 @@
         "note": "180-day window same as 90-day \u2014 signals only in Feb-Apr 2024"
       },
       "config_used": "/root/code/freqtrade/user_data/config.binance_local.json"
+    },
+    {
+      "run_at": "2026-08-25T02:01:47.617608Z",
+      "strategy_name": "NostalgiaForInfinity",
+      "strategy_file": "user_data/strategies/NostalgiaForInfinity.py",
+      "git_commit": "6283f27bd",
+      "timeframe": "4h",
+      "timerange": "20230101-20230731",
+      "data_source": "okx",
+      "status": "failed",
+      "backtest_exit_code": 0,
+      "backtest_result": {
+        "total_trades": 3,
+        "win_rate": 0.0,
+        "profit_total": -46.83,
+        "max_drawdown": null,
+        "note": "OKX vs Binance same-period: 3 trades 0% WR vs 5 trades 20% WR \u2014 exchange data matters"
+      },
+      "config_used": "user_data/config.okx.json"
     }
   ]
 }
